@@ -1,0 +1,278 @@
+<html>
+
+<head>
+    <!-- Load the d3 library. -->
+    <link href='https://fonts.googleapis.com/css?family=Archivo+Black|Archivo+Narrow' rel='stylesheet' type='text/css'>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400i|Permanent+Marker" rel="stylesheet">
+    <title>California Wildfires</title>
+    <style>
+
+        body {
+            overflow-x: hidden;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            background-color: #fff5eb;
+            font-family: 'Lato', sans-serif;
+
+        }
+
+        #map_heading {
+          font-family: 'Permanent Marker', cursive;
+          font-size: 48px;
+          text-align: center;
+          position: relative;
+
+
+        }
+
+        .line {
+          width: 11%;
+          height: 1%;
+          border-bottom: 15px solid black;
+          position: absolute;
+          text-align: center;
+          padding-left: 10%;
+          top:45%;
+        }
+
+        #line1 {
+          float: left;
+          left: 5%;
+
+        }
+
+        #line2 {
+          float: right;
+          right: 5%;
+
+        }
+
+        #subtitle {
+          top: -5%;
+          font-size: 38px;
+          font-family: 'Permanent Marker', cursive;
+          text-align: center;
+          position: relative;
+        }
+
+
+        #map_description {
+          font-family: 'Lato', sans-serif;
+          /*top: -10%;*/
+          text-align: left;
+
+        }
+
+        #map_description p {
+          margin-top:-3%;
+          padding: 0 29%;
+        }
+
+        #map_description svg {
+          padding-left: 25%;
+        }
+
+        #map_svg {
+          text-align: center;
+        }
+
+        .subunit.San.Francisco,
+        .subunit.mateo,
+        .subunit.alameda,
+        .subunit.santa.clara {
+          fill: maroon;
+          stroke: white;
+          stroke-linejoin: round;
+        }
+
+        .subunit {
+          fill: #a6a6a6;
+          stroke: white;
+          stroke-width: 1px;
+        }
+        .subunit:hover {
+          opacity: 0.7;
+          fill: lightyellow;
+        }
+        .exterior-boundary {
+          fill: none;
+          stroke: black;
+          stroke-linejoin: round;
+          stroke-width: 2px;
+        }
+
+        div.tooltip {
+          position: absolute;
+          text-align: center;
+          width: 75px;
+          padding: 2px;
+          font: 12px sans-serif;
+          color: white;
+          background: black;
+          border: 0px;
+          border-radius: 8px;
+          pointer-events: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="pic" style="
+        margin:0px;
+        background: black;
+        width: 100%;
+        text-align: center;
+        ">
+
+        <!-- <img src="images/banner.png"> -->
+    </div>
+
+    <div id="map">
+
+      </div>
+      <div id="map_heading">
+        <div class="line" id="line1"></div>
+        <div class="line" id="line2"></div>
+        <h1>California<br/>Wildfires</h1>
+
+
+      </div>
+      <div id="subtitle"><h6>Over the Past ## Years</h6></div>
+      <div id="map_description">
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh. Vivamus in iaculis ex, a rhoncus nulla. Sed vitae malesuada lectus, in efficitur ex. Nullam eu sagittis eros, vitae consectetur purus. Ut convallis augue dolor, non fringilla massa faucibus a. Quisque dictum in mauris nec mattis. Proin eget urna at augue posuere maximus ut vitae mauris. Duis mattis mauris mi, et egestas enim ultricies vel. Pellentesque vitae orci libero.
+      </p>
+      <svg id="map_svg" width="900" height="1000"></svg>
+    </div>
+
+
+    <script>
+
+      var width = 900;
+      var height = 1000;
+
+      var  projection = d3.geo.mercator()
+      .scale(3900)
+      .center([-120, 36])
+      .translate([width/3, height/1.5]);
+      //var projection = d3.geo.albersUsa() //works but tried another method above
+      //  .scale(2500)
+      //  .translate([1000, 360]);
+      var path = d3.geo.path()
+        .projection(projection);
+      var svg = d3.select("#map_svg").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+
+      d3.queue()
+        .defer(d3.json, ("datasets/CACounties.json"))
+        .await(callback);
+
+        function callback(error, ca) {
+          showCA(ca);
+
+        }
+        //console.log(ca.objects.caCounties); //for navigating the data in the console
+
+
+
+
+      //need to clean cvs
+      // var parseRow = function(row) {
+      //   return row;
+      // }
+
+
+      //get the data
+      // d3.queue()
+      //   .defer(d3.csv, "datasets/msdv5.csv", parseRow)
+      //   .defer(d3.json, "us.json")
+      //   .await(callback);
+
+      //   function callback (error, rawData, rawMap) {
+      //     console.log("Code in the call-back function is only executed when every data file loads.");
+
+      //     states = topojson.feature(rawMap, rawMap.objects.states);
+      //     records = rawData;
+      //     causes = getCauses(records);
+
+      //     console.log(records);
+      //     console.log(states);
+      //     console.log(causes);
+
+      //     records.forEach(function(d){
+      //       var array = [
+      //         parseFloat(d.Longitude),
+      //         parseFloat(d.Latitude),
+      //         parseInt(d.Fatalities),
+      //         parseInt(d["Total victims"]),
+      //         d.Date
+      //       ];
+      //       coordinates.push(array);
+      //     })
+
+      //     coordinates.reverse();
+      //     //add parameters if needed
+      //     showMap();
+      //     showSunburst();
+
+      //   }
+
+    function showCA(ca) {
+
+      //console.log(ca.objects.caCounties); //for navigating the data in the console
+      svg.append("path")
+        .datum(topojson.feature(ca, ca.objects.subunits))
+        .attr("class", "land")
+        .attr("d", path);
+      //bind feature data to the map
+      svg.selectAll(".subunit")
+          .data(topojson.feature(ca, ca.objects.subunits).features)
+        .enter().append("path")
+        .attr("class", function(d) { return "subunit " + d.properties.name; })
+        .attr("d", path)
+        .on("mouseover", function(d){ //tooltip
+          div.transition()
+            .duration(200)
+            .style("opacity", .9);
+          div.html(d.properties.fullName)
+            .style("left", (d3.event.pageX) + 10 + "px")
+            .style("top", (d3.event.pageY - 30) + "px");
+        })
+        .on("mouseout", function(d) {
+          div.transition()
+            .duration(500)
+            .style("opacity", 0.0);
+        });
+      //exterior border
+      svg.append("path")
+        .datum(topojson.mesh(ca, ca.objects.subunits, function(a, b) { return a === b;}))
+        .attr("d", path)
+        .attr("class", "exterior-boundary");
+      //tooltop declaration
+      var div = d3.select("#map").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+
+
+
+    }
+
+
+
+
+    </script>
+
+</body>
+
+</html>
+
