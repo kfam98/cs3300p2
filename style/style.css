@@ -1,119 +1,161 @@
-h1 {
-  font-size: 15px;
-  font-weight: normal;
-  font-family: "Roboto Condensed";
-  text-align: center;
-  color: #000000;
-  line-height: 100%;
-  text-align: left;
-  margin: 0px 0px 10px 0px;
-  padding-top:5px;
-  text-transform:none;
-}
-
-.container {
-    position: relative;
-    text-align: left;
-    color: black;
-    font-size: 40px;
-    font-family:"Roboto Condensed";
-    text-transform: uppercase;
-}
-
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.box {
-  width: 1050px;
-  height: 200px;
-  border: 2px solid black;
-  background-color: white;
-  opacity: 0.7;
-  top: 50%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  position: absolute;
-
-}
-
-
 body {
     overflow-x: hidden;
     width: 100vw;
     margin: 0;
     padding: 0;
-    background-color: #0f121b;
-    color: #ffffeb;
+    background-color: #fefdfb;
     font-family: 'Lato', sans-serif;
 
 }
 
-#map_heading {
-  font-family: 'Permanent Marker', cursive;
-  font-size: 48px;
-  text-align: center;
-  position: relative;
+/* section styling */
 
+.sections {
+  display: block;
+}
+
+.section {
+    float: left;
+    margin-left: 10%;
+    text-align: left;
+    color: white;
+    background-color: #a6a6a6;
+    font-size: 18px;
+    font-family:"Roboto Condensed";
+    border-radius: 20px;
+    background-repeat: no-repeat;
+    padding: 10%;
+    width: 60%;
+    position: relative;
+    margin-bottom: 3%;
+    background-position: bottom;
+    box-shadow: 1px 1px #CCC;
 
 }
 
-.line {
-  width: 11%;
-  height: 1%;
-  border-bottom: 15px solid #ffffeb;
-  position: absolute;
-  text-align: center;
+.section_title {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+
+
+/* header styling */
+.header {
+  color: #E4A408;
+  width: 100%;
+  height: auto;
+  display: block;
+  padding-top: 5%;
   padding-left: 10%;
-  top:45%;
+  padding-bottom: 5%;
 }
 
-#line1 {
+.title {
+  color: #E4A408;
   float: left;
-  left: 5%;
-  padding-top: 20px;
+  width: 55%;
+  display: block;
 
 }
 
-#line2 {
-  float: right;
-  right: 5%;
-  padding-top: 20px;
+.title h1 {
+  float: left;
+  padding-left: 2%;
 
 }
 
 #subtitle {
-  top: -5%;
-  font-size: 38px;
-  font-family: 'Permanent Marker', cursive;
-  text-align: center;
+  /* word-wrap: break-word; */
+  font-size: 12px;
+  float: left;
+  padding-left: 1%;
+  padding-top: 4%;
+
+}
+
+
+
+.nav {
+  width: 24%;
+  float: left;
+  padding-top: 2.5%;
+  text-align: right;
+
+}
+
+.nav a {
+
+  font-weight: 600;
+  margin: 0 10px;
+  text-decoration: none;
+  border-bottom: 5px solid #E4A408;
+  color: #E4A408;
+
+}
+
+.line {
+  height: 1%;
+}
+
+#line1 {
+  width: 2%;
+  float: left;
+  padding-top: 1.6%;
+  border-bottom: 30px solid  #E4A408;
+
+}
+
+#line2, #line3, #line4 {
+
+  width: 30%;
+  border-top: 3px solid white;
+  padding-top: 20px;
+
+}
+
+
+/* about styling */
+
+#about {
+  height: 70%;
+}
+.about_description {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    /* transform: translate(-50%, -50%); */
+}
+
+
+/* map styling */
+
+#map {
+  height: auto;
   position: relative;
 }
 
-
-#map_description {
-  font-family: 'Lato', sans-serif;
-  /*top: -10%;*/
-  text-align: left;
-
-}
-
-#map_description p {
-  margin-top:-3%;
-  padding: 0 29%;
-}
-
-#map_description svg {
-  padding-left: 25%;
-}
-
 #map_svg {
-  text-align: center;
+  /* text-align: center; */
+  width: 100%;
+  position: relative;
 }
 
+/* graph styling */
+
+#graph {
+
+}
+
+
+/* in common */
+.graph_title {
+  margin-top: -5%;
+  margin-left: -3%;
+}
+
+/* controlling subunits/red parts  */
 .subunit.San.Francisco,
 .subunit.mateo,
 .subunit.alameda,
@@ -124,7 +166,7 @@ body {
 }
 
 .subunit {
-  fill: #a6a6a6;
+  fill: #d3d3d3;
   stroke: white;
   stroke-width: 1px;
 }
@@ -134,7 +176,7 @@ body {
 }
 .exterior-boundary {
   fill: none;
-  stroke: black;
+  stroke: #d3d3d3;
   stroke-linejoin: round;
   stroke-width: 2px;
 }
@@ -146,7 +188,7 @@ div.tooltip {
   padding: 2px;
   font: 12px sans-serif;
   color: white;
-  background: black;
+  background: white;
   border: 0px;
   border-radius: 8px;
   pointer-events: none;
