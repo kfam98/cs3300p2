@@ -8,138 +8,28 @@
     <script src="//d3js.org/topojson.v1.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:400i|Permanent+Marker" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style/style.css" media="all"/>
     <title>California Wildfires</title>
-    <style>
 
-        body {
-            overflow-x: hidden;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
-            background-color: #fff5eb;
-            font-family: 'Lato', sans-serif;
-
-        }
-
-        #map_heading {
-          font-family: 'Permanent Marker', cursive;
-          font-size: 48px;
-          text-align: center;
-          position: relative;
-
-
-        }
-
-        .line {
-          width: 11%;
-          height: 1%;
-          border-bottom: 15px solid black;
-          position: absolute;
-          text-align: center;
-          padding-left: 10%;
-          top:45%;
-        }
-
-        #line1 {
-          float: left;
-          left: 5%;
-
-        }
-
-        #line2 {
-          float: right;
-          right: 5%;
-
-        }
-
-        #subtitle {
-          top: -5%;
-          font-size: 38px;
-          font-family: 'Permanent Marker', cursive;
-          text-align: center;
-          position: relative;
-        }
-
-
-        #map_description {
-          font-family: 'Lato', sans-serif;
-          /*top: -10%;*/
-          text-align: left;
-
-        }
-
-        #map_description p {
-          margin-top:-3%;
-          padding: 0 29%;
-        }
-
-        #map_description svg {
-          padding-left: 25%;
-        }
-
-        #map_svg {
-          text-align: center;
-        }
-
-        .subunit.San.Francisco,
-        .subunit.mateo,
-        .subunit.alameda,
-        .subunit.santa.clara {
-          fill: maroon;
-          stroke: white;
-          stroke-linejoin: round;
-        }
-
-        .subunit {
-          fill: #a6a6a6;
-          stroke: white;
-          stroke-width: 1px;
-        }
-        .subunit:hover {
-          opacity: 0.7;
-          fill: lightyellow;
-        }
-        .exterior-boundary {
-          fill: none;
-          stroke: black;
-          stroke-linejoin: round;
-          stroke-width: 2px;
-        }
-
-        div.tooltip {
-          position: absolute;
-          text-align: center;
-          width: 75px;
-          padding: 2px;
-          font: 12px sans-serif;
-          color: white;
-          background: black;
-          border: 0px;
-          border-radius: 8px;
-          pointer-events: none;
-        }
-
-    </style>
 </head>
 
 <body>
-    <div id="pic" style="
-        margin:0px;
-        background: black;
-        width: 100%;
-        text-align: center;
-        ">
-
-        <!-- <img src="images/banner.png"> -->
+  <div class="container">
+      <img src="images/header.png" alt="Header" style="width:100%;">
+      <div class="box"></div>
+      <div class="centered">California Wildfires<br>
+        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh. Vivamus in iaculis ex, a rhoncus nulla. Sed vitae malesuada lectus, in efficitur ex. Nullam eu sagittis eros, vitae consectetur purus. Ut convallis augue dolor, non fringilla massa faucibus a. Quisque dictum in mauris nec mattis. Proin eget urna at augue posuere maximus ut vitae mauris. Duis mattis mauris mi, et egestas enim ultricies vel. Pellentesque vitae orci libero.</h1>
+      </div>
     </div>
-
     <div id="map">
 
-      </div>
+    </div>
       <div id="map_heading">
         <div class="line" id="line1"></div>
         <div class="line" id="line2"></div>
-        <h1>California<br/>Wildfires</h1>
+
+
+
 
 
       </div>
@@ -275,4 +165,3 @@
 </body>
 
 </html>
-

@@ -1,0 +1,153 @@
+h1 {
+  font-size: 15px;
+  font-weight: normal;
+  font-family: "Roboto Condensed";
+  text-align: center;
+  color: #000000;
+  line-height: 100%;
+  text-align: left;
+  margin: 0px 0px 10px 0px;
+  padding-top:5px;
+  text-transform:none;
+}
+
+.container {
+    position: relative;
+    text-align: left;
+    color: black;
+    font-size: 40px;
+    font-family:"Roboto Condensed";
+    text-transform: uppercase;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.box {
+  width: 1050px;
+  height: 200px;
+  border: 2px solid black;
+  background-color: white;
+  opacity: 0.7;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
+
+}
+
+
+body {
+    overflow-x: hidden;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    background-color: #0f121b;
+    color: #ffffeb;
+    font-family: 'Lato', sans-serif;
+
+}
+
+#map_heading {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 48px;
+  text-align: center;
+  position: relative;
+
+
+}
+
+.line {
+  width: 11%;
+  height: 1%;
+  border-bottom: 15px solid #ffffeb;
+  position: absolute;
+  text-align: center;
+  padding-left: 10%;
+  top:45%;
+}
+
+#line1 {
+  float: left;
+  left: 5%;
+  padding-top: 20px;
+
+}
+
+#line2 {
+  float: right;
+  right: 5%;
+  padding-top: 20px;
+
+}
+
+#subtitle {
+  top: -5%;
+  font-size: 38px;
+  font-family: 'Permanent Marker', cursive;
+  text-align: center;
+  position: relative;
+}
+
+
+#map_description {
+  font-family: 'Lato', sans-serif;
+  /*top: -10%;*/
+  text-align: left;
+
+}
+
+#map_description p {
+  margin-top:-3%;
+  padding: 0 29%;
+}
+
+#map_description svg {
+  padding-left: 25%;
+}
+
+#map_svg {
+  text-align: center;
+}
+
+.subunit.San.Francisco,
+.subunit.mateo,
+.subunit.alameda,
+.subunit.santa.clara {
+  fill: maroon;
+  stroke: white;
+  stroke-linejoin: round;
+}
+
+.subunit {
+  fill: #a6a6a6;
+  stroke: white;
+  stroke-width: 1px;
+}
+.subunit:hover {
+  opacity: 0.7;
+  fill: lightyellow;
+}
+.exterior-boundary {
+  fill: none;
+  stroke: black;
+  stroke-linejoin: round;
+  stroke-width: 2px;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 75px;
+  padding: 2px;
+  font: 12px sans-serif;
+  color: white;
+  background: black;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
