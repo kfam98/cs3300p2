@@ -3,7 +3,7 @@ body {
     width: 100vw;
     margin: 0;
     padding: 0;
-    background-color: #fefdfb;
+    background-color: #f7f7f7;
     font-family: 'Lato', sans-serif;
 
 }
@@ -16,16 +16,15 @@ body {
 
 .section {
     float: left;
-    margin-left: 10%;
+    margin-left: 3%;
     text-align: left;
-    color: white;
-    background-color: #a6a6a6;
+    color: #f7f7f7;
+    background-color: #333;
     font-size: 18px;
-    font-family:"Roboto Condensed";
     border-radius: 20px;
     background-repeat: no-repeat;
-    padding: 10%;
-    width: 60%;
+    padding: 5%;
+    width: 84%;
     position: relative;
     margin-bottom: 3%;
     background-position: bottom;
@@ -46,8 +45,8 @@ body {
   width: 100%;
   height: auto;
   display: block;
-  padding-top: 5%;
-  padding-left: 10%;
+  padding-top: 2%;
+  padding-left: 3%;
   padding-bottom: 5%;
 }
 
@@ -62,37 +61,22 @@ body {
 .title h1 {
   float: left;
   padding-left: 2%;
+  font-size: 42px;
+  font-weight: 600;
 
 }
 
 #subtitle {
   /* word-wrap: break-word; */
-  font-size: 12px;
+  font-size: 16px;
   float: left;
   padding-left: 1%;
-  padding-top: 4%;
+  padding-top: 5%;
 
 }
 
 
 
-.nav {
-  width: 24%;
-  float: left;
-  padding-top: 2.5%;
-  text-align: right;
-
-}
-
-.nav a {
-
-  font-weight: 600;
-  margin: 0 10px;
-  text-decoration: none;
-  border-bottom: 5px solid #E4A408;
-  color: #E4A408;
-
-}
 
 .line {
   height: 1%;
@@ -108,18 +92,27 @@ body {
 
 #line2, #line3, #line4 {
 
-  width: 30%;
+  width: 80%;
   border-top: 3px solid white;
   padding-top: 20px;
 
 }
 
 
+.footer {
+  background-color: #E4A408;
+  height: 50px;
+  width: 100%;
+  float: left;
+  margin-top: 5%;
+}
+
 /* about styling */
 
 #about {
   height: 70%;
 }
+
 .about_description {
     position: absolute;
     top: 50%;
@@ -133,14 +126,29 @@ body {
 
 #map {
   height: auto;
-  position: relative;
+  /* position: relative; */
 }
 
-#map_svg {
-  /* text-align: center; */
-  width: 100%;
-  position: relative;
+#map_title {
+    color: #E94F64;
+    font-weight: 600;
 }
+
+.map_description_bg {
+  background-color: #E94F64;
+  opacity: .2;
+  width: 100%;
+}
+
+.map_description, .graph_description {
+  padding: 5%;
+}
+
+#map svg {
+  margin-left: 3%;
+  margin-top: -5%;
+}
+
 
 /* graph styling */
 
@@ -153,6 +161,7 @@ body {
 .graph_title {
   margin-top: -5%;
   margin-left: -3%;
+   text-transform: uppercase;
 }
 
 /* controlling subunits/red parts  */
@@ -161,18 +170,18 @@ body {
 .subunit.alameda,
 .subunit.santa.clara {
   fill: maroon;
-  stroke: white;
+  stroke: #d3d3d3;
   stroke-linejoin: round;
 }
 
 .subunit {
   fill: #d3d3d3;
-  stroke: white;
+  stroke: #d3d3d3;
   stroke-width: 1px;
 }
 .subunit:hover {
-  opacity: 0.7;
-  fill: lightyellow;
+  opacity: 0.5;
+  fill: #d3d3d3;
 }
 .exterior-boundary {
   fill: none;
@@ -184,11 +193,11 @@ body {
 div.tooltip {
   position: absolute;
   text-align: center;
-  width: 75px;
-  padding: 2px;
+  width: 100px;
+  padding: 10px;
   font: 12px sans-serif;
-  color: white;
-  background: white;
+  color: #f7f7f7;
+  background: #E4A408;
   border: 0px;
   border-radius: 8px;
   pointer-events: none;
