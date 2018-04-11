@@ -3,10 +3,10 @@
 <head>
     <!-- Load the d3 library. -->
     <link href='https://fonts.googleapis.com/css?family=Archivo+Black|Archivo+Narrow' rel='stylesheet' type='text/css'>
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script src="//d3js.org/d3.v4.min.js"></script>
-    <script src="//d3js.org/topojson.v1.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:400i|Permanent+Marker" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style/style.css" media="all"/>
     <title>California Wildfires</title>
@@ -24,7 +24,7 @@
     <div id="map">
 
     </div>
-      <div id="map_heading">
+    <div id="map_heading">
         <div class="line" id="line1"></div>
         <div class="line" id="line2"></div>
 
@@ -39,36 +39,44 @@
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh. Vivamus in iaculis ex, a rhoncus nulla. Sed vitae malesuada lectus, in efficitur ex. Nullam eu sagittis eros, vitae consectetur purus. Ut convallis augue dolor, non fringilla massa faucibus a. Quisque dictum in mauris nec mattis. Proin eget urna at augue posuere maximus ut vitae mauris. Duis mattis mauris mi, et egestas enim ultricies vel. Pellentesque vitae orci libero.
       </p>
-      <svg id="map_svg" width="900" height="1000"></svg>
+      <!-- <svg id="map_svg" width="900" height="1000"></svg>  -->
     </div>
 
+	<div style="text-align: center;">
+		<div id="map_svg" style="width:900px;height:1000px;display:inline-block;"></div>
+	</div>
 
     <script>
 
       var width = 900;
       var height = 1000;
+      //console.log("Here!!");
 
       var  projection = d3.geo.mercator()
       .scale(3900)
       .center([-120, 36])
-      .translate([width/3, height/1.5]);
+      .translate([width/3, height/1.5])
+      ;
       //var projection = d3.geo.albersUsa() //works but tried another method above
       //  .scale(2500)
       //  .translate([1000, 360]);
+
+
       var path = d3.geo.path()
         .projection(projection);
+
       var svg = d3.select("#map_svg").append("svg")
         .attr("width", width)
         .attr("height", height);
 
-
       d3.queue()
         .defer(d3.json, ("datasets/CACounties.json"))
+        .defer(d3.csv, ("datasets/Landslides.csv"))
         .await(callback);
 
-        function callback(error, ca) {
+        function callback(error, ca, csv) {
           showCA(ca);
-
+          showLandSlide(csv);
         }
         //console.log(ca.objects.caCounties); //for navigating the data in the console
 
@@ -129,6 +137,23 @@
         .enter().append("path")
         .attr("class", function(d) { return "subunit " + d.properties.name; })
         .attr("d", path)
+        .style("fill", function(d) {
+          if (d.properties.name == "San Diego") {
+              return "#00538d";
+          }
+          else if (d.properties.name == "San Bernadino") {
+            return "#0287e5";
+          }
+          else if (d.properties.name == "Riverside") {
+            return "#2997e4"
+          }
+          else if (d.properties.name == "Alpine" || d.properties.name == "Imperial") {
+            return "#62beff";
+          }
+          else {
+            return "#91cffa";
+          }
+        })
         .on("mouseover", function(d){ //tooltip
           div.transition()
             .duration(200)
@@ -153,6 +178,42 @@
         .style("opacity", 0);
 
 
+
+
+    }
+
+
+
+    function showLandSlide(landslideData) {
+		console.log("== showLandSlide ==", landslideData);
+
+		landslideData.forEach(function(d) {
+			// CSV column names
+			//id,date,time,continent_code,country_name,country_code,state/province,population,city/town,distance,location_description,latitude,longitude,geolocatio
+			//hazard_type,landslide_type,landslide_size,trigger,storm_name,injuries,fatalities,source_name,source_link
+
+			// Only converts those numbers (integers or reals)
+			d.population = +d.population;
+			d.distance = +d.distance;
+			d.latitude = +d.latitude;
+			d.longitude = +d.longitude;
+			d.landslide_size = +d.landslide_size;
+			d.injuries = +d.injuries;
+			d.fatalities = +d.fatalities;
+		});
+
+		var keyCounties = d3.nest()
+		    .key(function(d) { return d["county"]; })  // .sortKeys(d3.ascending)
+    	.entries(landslideData);
+
+    	console.log("Parse based on county == ", keyCounties);
+
+		keyCounties.forEach(function(county) {
+
+      console.log(county.values.length);
+
+
+		});
 
 
     }
