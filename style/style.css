@@ -3,7 +3,7 @@ body {
     width: 100vw;
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    background-color: #484848;
     font-family: 'Lato', sans-serif;
 
 }
@@ -21,14 +21,13 @@ body {
     color: #f7f7f7;
     background-color: #333;
     font-size: 18px;
-    border-radius: 20px;
     background-repeat: no-repeat;
-    padding: 5%;
-    width: 84%;
-    position: relative;
+    padding: 2%;
+    margin-top: 5%;
+    width: 88.5%;
+    /* position: relative; */
     margin-bottom: 3%;
     background-position: bottom;
-    box-shadow: 1px 1px #CCC;
 
 }
 
@@ -43,26 +42,35 @@ body {
 .header {
   color: #E4A408;
   width: 100%;
-  height: auto;
+  height: 100px;
   display: block;
   padding-top: 2%;
   padding-left: 3%;
   padding-bottom: 5%;
+  background-color: #333;
 }
 
 .title {
   color: #E4A408;
   float: left;
   width: 55%;
+  padding-top: 4%;
   display: block;
 
 }
 
 .title h1 {
   float: left;
-  padding-left: 2%;
+  padding-left: 2.5%;
   font-size: 42px;
   font-weight: 600;
+
+}
+
+.title img {
+  width: 80px;
+  float: left;
+  height: auto;
 
 }
 
@@ -74,8 +82,6 @@ body {
   padding-top: 5%;
 
 }
-
-
 
 
 .line {
@@ -100,38 +106,55 @@ body {
 
 
 .footer {
-  background-color: #E4A408;
+  background-color: #333;
   height: 50px;
   width: 100%;
   float: left;
   margin-top: 5%;
 }
 
-/* about styling */
-
-#about {
-  height: 70%;
-}
-
-.about_description {
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    width: 80%;
-    /* transform: translate(-50%, -50%); */
-}
 
 
 /* map styling */
 
-#map {
+.section_parent {
+  width: 20%;
   height: auto;
+  display: block;
+  float: left;
+  margin-left: 3%;
+  text-align: left;
+  color: #f7f7f7;
+  /* background-color: #333; */
+  font-size: 18px;
+  background-repeat: no-repeat;
+  margin-top: 4%;
+
   /* position: relative; */
+
+  background-position: bottom;
+}
+
+#map_about {
+  height: 80%;
+  width: 100%;
+  float: left;
+  /* margin-top: 5%; */
+  /* margin-bottom: 3%; */
+}
+
+
+#map_stats {
+  float: left;
+  width: 100%;
+  height: 26.1%;
+  margin-top: 1%;
+  margin-bottom: 3%;
 }
 
 #map_title {
     color: #E94F64;
-    font-weight: 600;
+    font-weight: 1000;
 }
 
 .map_description_bg {
@@ -140,20 +163,29 @@ body {
   width: 100%;
 }
 
-.map_description, .graph_description {
-  padding: 5%;
+.map_description {
+  padding: 10%;
 }
 
-#map svg {
-  margin-left: 3%;
-  margin-top: -5%;
+#map_ca {
+  float:left;
+  width: 66%;
+
+}
+
+#map_ca svg {
+  /* margin-left: 3%; */
+  /* margin-top: 10%; */
+  background-color: #3d3d3d;
+
 }
 
 
 /* graph styling */
 
 #graph {
-
+  margin-top: 0;
+  margin-left: 3.5%;
 }
 
 
@@ -162,6 +194,10 @@ body {
   margin-top: -5%;
   margin-left: -3%;
    text-transform: uppercase;
+}
+
+.graph_description {
+  padding: 5%;
 }
 
 /* controlling subunits/red parts  */

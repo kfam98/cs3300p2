@@ -2,7 +2,6 @@
 
 <head>
     <!-- Load the d3 library. -->
-    <link href='https://fonts.googleapis.com/css?family=Archivo+Black|Archivo+Narrow' rel='stylesheet' type='text/css'>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/d3.v4.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -10,11 +9,8 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:400i|Permanent+Marker" rel="stylesheet">
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script src="//d3js.org/d3.v4.min.js"></script>
-    <script src="//d3js.org/topojson.v1.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Lato:400|Permanent+Marker" rel="stylesheet">
+    <script src="http://vizjs.org/viz.v1.1.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style/style.css" media="all"/>
     <title>California Wildfires</title>
 
@@ -24,29 +20,24 @@
   <div class="header">
     <!-- <div class="line" id="line1"></div> -->
     <div class="title">
+      <img alt="fire" src="images/fire.png"/>
       <h1>CALIFORNIA WILDFIRES</h1>
-      <span id="subtitle">AND <br/> LANDSLIDES</span>
+      <!-- <span id="subtitle">AND <br/> LANDSLIDES</span> -->
     </div>
   </div>
 
 
   <div class="sections">
-  <div class="section" id="about" style="background: url(images/header2.png);">
 
-      <div class="about_description"><span class="section_title">THE STORY BEHIND WILDFIRES AND LANDSLIDES</span><br>
-        <div class="line" id="line2"></div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh. Vivamus in iaculis ex, a rhoncus nulla. Sed vitae malesuada lectus, in efficitur ex. Nullam eu sagittis eros, vitae consectetur purus. Ut convallis augue dolor, non fringilla massa faucibus a. Quisque dictum in mauris nec mattis. Proin eget urna at augue posuere maximus ut vitae mauris. Duis mattis mauris mi, et egestas enim ultricies vel. Pellentesque vitae orci libero.</p>
-      </div>
-  </div>
-
-  <div class="section"  id="map">
+  <div class="section_parent">
+  <div class="section"  id="map_about">
       <div class="map_description">
         <div class="map_description_bg"></div>
         <span id="map_title" class="section_title graph_title" >
-        Wildfires and Landslides in California</span>
+        Wildfires in California</span>
         <!-- <div class="line" id="line3"></div> -->
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh. Vivamus in iaculis ex, a rhoncus nulla. Sed vitae malesuada lectus, in efficitur ex. Nullam eu sagittis eros, vitae consectetur purus. Ut convallis augue dolor, non fringilla massa faucibus a. Quisque dictum in mauris nec mattis. Proin eget urna at augue posuere maximus ut vitae mauris. Duis mattis mauris mi, et egestas enim ultricies vel. Pellentesque vitae orci libero.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh.
         </p>
 
       </div>
@@ -55,6 +46,14 @@
       <!-- <svg id="map_svg" width="1100" height="800"></svg> -->
 
     </div>
+
+  <div class="section" id="map_stats">
+  </div>
+</div>
+
+  <div class="section" id="map_ca">
+
+  </div>
 
 
       <!-- <svg id="map_svg" width="900" height="1000"></svg>  -->
@@ -70,7 +69,7 @@
 
 
 
-    <svg id="graph_svg" width="950" height="600"></svg>
+    <!-- <svg id="graph_svg" width="500" height="400"></svg> -->
 
 
   </div>
@@ -81,19 +80,30 @@
 
     <script>
 
-      var width = 900;
+      var width = 848;
       //console.log("Here!!");
-      var height = 800;
+      var height = 725;
 
       var projection = d3.geo.mercator()
       .scale(3000)
       .center([-120, 36])
-      .translate([width/3.8, height/1.5]);
+      .translate([width/2, height/2 + 100]);
 
+      //an array containing coordinates [long, lat]
       var coordinates = [];
+      //an array containing [cause, total, ...]
+      var causes = [];
+      //an array containing [[year, cause, total num in year, total num of cause in that year], ...]
+
+
+      var bipartitieArr = [];
+
+      var years = [];
       //var projection = d3.geo.albersUsa() //works but tried another method above
       //  .scale(2500)
       //  .translate([1000, 360]);
+
+      var year_and_cause = [];
 
       var rScale = d3.scaleSqrt()
         .domain([0.0, 1])
@@ -103,7 +113,7 @@
       var path = d3.geo.path()
         .projection(projection);
 
-      var svg = d3.select("#map").append("svg")
+      var svg = d3.select("#map_ca").append("svg")
 
         .attr("width", width)
         .attr("height", height);
@@ -112,13 +122,16 @@
       d3.queue()
         .defer(d3.json, ("datasets/CACounties.json"))
         .defer(d3.csv, ("datasets/Landslides.csv"))
-        .defer(d3.csv, ("datasets/FiresToR.csv"))
+        .defer(d3.csv, ("datasets/NewFires.csv"))
         .await(callback);
 
         function callback(error, ca, landslide, fire) {
           showCA(ca);
           showLandSlide(landslide);
           showFire(fire);
+          showBiPartite(fire);
+
+
 
         }
 
@@ -161,7 +174,8 @@
             .style("opacity", .9);
           div.html(d.properties.fullName)
             .style("left", (d3.event.pageX) - 50 + "px")
-            .style("top", (d3.event.pageY - 900) + "px");
+            .style("top", (d3.event.pageY + 9) + "px");
+            console.log(d3.event.pageX, d3.event.pageY);
 
         })
         .on("mouseout", function(d) {
@@ -187,14 +201,57 @@
     }
 
 
+
+
     function showFire(fireData) {
+
+      causes = [
+        "Miscellaneous", 12099,
+        "Lightning", 17451,
+        "Debris Burning", 2284,
+        "Campfire", 5616,
+        "Equipment Use", 7271,
+        "Children", 1643,
+        "Arson", 8200,
+        "Smoking", 1707,
+        "Railroad", 210,
+        "Fireworks", 153,
+        "Structure", 71,
+        "Powerline", 743,
+        "Missing/Undefined", 295
+      ];
+
+      years = [
+        1992, 4072,
+        1993, 2406,
+        1994, 3054,
+        1995, 2332,
+        1996, 3366,
+        1997, 2719,
+        1998, 3520,
+        1999, 4734,
+        2000, 3165,
+        2001, 3709,
+        2002, 3019,
+        2003, 3484,
+        2004, 3082,
+        2005, 2558,
+        2006, 3699,
+        2007, 4548,
+        2008, 2175,
+        2009, 2101,
+      ];
+
+
+      bipartitieArr = [];
+
 
 
 
 
       fireData.forEach(function(d) {
 
-  			d.FIRE_YEAR = +d.FIRE_YEAR;
+  			// d.FIRE_YEAR = +d.FIRE_YEAR;
   			d.LATITUDE = +d.LATITUDE;
   			d.LONGITUDE = +d.LONGITUDE;
   			d.FIRE_SIZE = +d.FIRE_SIZE;
@@ -202,9 +259,32 @@
         var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
         coordinates.push(array);
 
+        var str = d.FIRE_YEAR + " " + d.STAT_CAUSE_DESCR;
+        // console.log(str);
+
+        if (year_and_cause.indexOf(str) == -1) {
+          year_and_cause.push(str);
+          year_and_cause.push(1);
+        } else {
+          var i = year_and_cause.indexOf(str);
+          // console.log(i);
+          var num = year_and_cause[i + 1];
+          year_and_cause[i + 1] = num + 1;
+        }
+
+
+
+        // bipartitieArr.push([d.FIRE_YEAR, d.STAT_CAUSE_DESCR, 1, 1]);
+
+
 
 
   		});
+
+      console.log(year_and_cause);
+
+
+
 
       var circles = svg.selectAll("circle")
         .data(coordinates);
@@ -233,6 +313,138 @@
 
 
 
+    }
+
+    function showBiPartite(fire) {
+
+      //format of data [year, cause, total num in year, total num of cause in that year]
+      var data = [
+        ['Plus','AL',28648,1419],
+        ['Grand','AL',3,0],
+        ['Lite','CO',13,0],
+        ['Small','CO',396,0],
+        ['Medium','CO',362,0],
+        ['Plus','CO',78,10],
+        ['Grand','CO',2473,32],
+        ['Lite','CA',16,0],
+        ['Small','CA',1278,4],
+        ['Medium','CA',27,0],
+        ['Plus','CA',58,0],
+        ['Medium','AZ',862,0],
+        ['Grand','AZ',6228,30],
+        ['Lite','AL',15001,449],
+        ['Small','AL',527,3],
+        ['Medium','AL',836,0],
+        ['Elite','CO',2063,64],
+        ['Medium','DE',203,0],
+        ['Grand','DE',686,2],
+        ['Elite','DE',826,0],
+        ['Grand','CA',1551,15],
+        ['Elite','CA',141,0],
+        ['Lite','AZ',5453,35],
+        ['Small','AZ',683,1],
+        ['Lite','KS',1738,110],
+        ['Small','KS',12925,13],
+        ['Medium','KS',15413,0],
+        ['Small','GA',2166,2],
+        ['Medium','GA',86,0],
+        ['Plus','GA',348,3],
+        ['Grand','GA',4244,18],
+        ['Elite','GA',1536,1],
+        ['Small','IA',351,0],
+        ['Grand','IA',405,1],
+        ['Small','IL',914,1],
+        ['Medium','IL',127,0],
+        ['Grand','IL',1470,7],
+        ['Elite','IL',516,1],
+        ['Lite','IN',43,0],
+        ['Small','IN',667,1],
+        ['Medium','IN',172,0],
+        ['Plus','IN',149,1],
+        ['Grand','IN',1380,5],
+        ['Elite','IN',791,23],
+        ['Small','FL',1,0],
+        ['Grand','FL',1,0],
+        ['Small','MD',1070,1],
+        ['Grand','MD',1171,2],
+        ['Elite','MD',33,0],
+        ['Plus','TX',1,0],
+        ['Small','MS',407,0],
+        ['Medium','MS',3,0],
+        ['Grand','MS',457,2],
+        ['Elite','MS',20,0],
+        ['Small','NC',557,0],
+        ['Medium','NC',167,0],
+        ['Plus','NC',95,1],
+        ['Grand','NC',1090,5],
+        ['Elite','NC',676,6],
+        ['Lite','NM',1195,99],
+        ['Small','NM',350,3],
+        ['Medium','NM',212,0],
+        ['Grand','NM',1509,8],
+        ['Lite','NV',3899,389],
+        ['Small','NV',147,0],
+        ['Medium','NV',455,0],
+        ['Plus','NV',1,1],
+        ['Grand','NV',4100,16],
+        ['Lite','OH',12,0],
+        ['Small','OH',634,2],
+        ['Medium','OH',749,0],
+        ['Plus','OH',119,1],
+        ['Grand','OH',3705,19],
+        ['Elite','OH',3456,25],
+        ['Small','PA',828,2],
+        ['Medium','PA',288,0],
+        ['Plus','PA',141,0],
+        ['Grand','PA',2625,7],
+        ['Elite','PA',1920,10],
+        ['Small','SC',1146,2],
+        ['Medium','SC',212,0],
+        ['Plus','SC',223,4],
+        ['Grand','SC',1803,6],
+        ['Elite','SC',761,8],
+        ['Small','TN',527,0],
+        ['Medium','TN',90,0],
+        ['Grand','TN',930,4],
+        ['Elite','TN',395,1],
+        ['Lite','ME',7232,58],
+        ['Small','ME',1272,0],
+        ['Medium','ME',1896,0],
+        ['Plus','ME',1,0],
+        ['Grand','ME',10782,33],
+        ['Elite','ME',1911,3],
+        ['Small','VA',495,0],
+        ['Medium','VA',32,0],
+        ['Plus','VA',7,0],
+        ['Grand','VA',1557,12],
+        ['Elite','VA',24,0],
+        ['Small','WA',460,1],
+        ['Plus','WA',88,3],
+        ['Grand','WA',956,3],
+        ['Small','WV',232,0],
+        ['Medium','WV',71,0],
+        ['Grand','WV',575,2],
+        ['Elite','WV',368,3]
+        ];
+      var color ={Elite:"#3366CC", Grand:"#DC3912",  Lite:"#FF9900", Medium:"#109618", Plus:"#990099", Small:"#0099C6"};
+
+      var bp=viz.bP()
+      .data(data)
+      .min(12)
+      .pad(1)
+      .height(600)
+      .width(900)
+      .orient("horizontal")
+      .barSize(35)
+      .fill(d=>color[d.primary]);
+
+      d3.select("#graph")
+      .append("svg").attr("width", 960).attr("height", 800)
+      .append("g").attr("transform","translate(30,30)")
+      .call(bp);
+
+      // adjust height of frameElement in bl.ocks.org
+      d3.select(self.frameElement).style("height", "660px");
     }
 
 
