@@ -37,7 +37,12 @@
         Wildfires in California</span>
         <!-- <div class="line" id="line3"></div> -->
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh.
+        Where fire catches, destruction occurs. This is evident in
+        states like California where the combination of California's
+        terrain and climate make it a common victim of such destructive
+        forest fires. The unqiuely dry seasons and plentiful
+        forests allow for wildfires to spread up to over 170,000 acres.
+
         </p>
 
       </div>
@@ -59,11 +64,13 @@
       <!-- <svg id="map_svg" width="900" height="1000"></svg>  -->
   <div class="section"  id="graph">
     <div class="graph_description">
-      <span class="section_title graph_title" >
-      GRAPH</span>
+      <span class="section_title graph_title" id="graph_title" >
+      YEAR vs. CAUSE BIPARTITE GRAPH</span>
       <!-- <div class="line" id="line4"></div> -->
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed imperdiet ante. Donec porta a purus vitae consectetur. Nulla fermentum mi eget mauris sollicitudin, sed suscipit erat pretium. Vestibulum a augue ut est dignissim porta quis at ligula. Fusce quam orci, vulputate feugiat ex vel, elementum accumsan arcu. Ut sed dolor nibh. Vivamus in iaculis ex, a rhoncus nulla. Sed vitae malesuada lectus, in efficitur ex. Nullam eu sagittis eros, vitae consectetur purus. Ut convallis augue dolor, non fringilla massa faucibus a. Quisque dictum in mauris nec mattis. Proin eget urna at augue posuere maximus ut vitae mauris. Duis mattis mauris mi, et egestas enim ultricies vel. Pellentesque vitae orci libero.
+        Over the years, fires have been categorized by causes such as by
+        lightening, debris burning, and more. A majority of these wildfires
+        are caused by human intervention.
       </p>
     </div>
 
@@ -127,7 +134,6 @@
 
         function callback(error, ca, landslide, fire) {
           showCA(ca);
-          showLandSlide(landslide);
           showFire(fire);
           showBiPartite(fire);
 
@@ -151,36 +157,21 @@
         .enter().append("path")
         .attr("class", function(d) { return "subunit " + d.properties.name; })
         .attr("d", path)
-        .style("fill", function(d) {
-          if (d.properties.name == "San Diego") {
-              return "#30180d";
-          }
-          else if (d.properties.name == "San Bernadino") {
-            return "#804124";
-          }
-          else if (d.properties.name == "Riverside") {
-            return "#a0522d"
-          }
-          else if (d.properties.name == "Alpine" || d.properties.name == "Imperial") {
-            return "#c69781";
-          }
-          else {
-            return "#f7f7f7";
-          }
-        })
-        .on("mouseover", function(d){ //tooltip
+        .style("fill", "#f7f7f7")
+        .on("mouseover", function(d){
+         //tooltip
           div.transition()
             .duration(200)
             .style("opacity", .9);
           div.html(d.properties.fullName)
-            .style("left", (d3.event.pageX) - 50 + "px")
-            .style("top", (d3.event.pageY + 9) + "px");
-            console.log(d3.event.pageX, d3.event.pageY);
+            .style("left", (d3.event.pageX  ) + "px")
+            .style("top", (d3.event.pageY - 9) + "px");
+            // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
 
         })
         .on("mouseout", function(d) {
           div.transition()
-            .duration(500)
+            .duration(300)
             .style("opacity", 0.0);
         });
 
@@ -190,13 +181,11 @@
         .attr("d", path)
         .attr("stroke-opacity", 0.3)
         .attr("class", "exterior-boundary");
+
       //tooltop declaration
-      var div = d3.select("#map").append("div")
+      var div = d3.select("#map_ca").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
-
-
-
 
     }
 
@@ -242,8 +231,31 @@
         2009, 2101,
       ];
 
+      years_nototal = [
+        1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
+        2004, 2005, 2006, 2007, 2008, 2009
+      ];
 
-      bipartitieArr = [];
+      causes_nototal = [
+        "Miscellaneous",
+        "Lightning",
+        "Debris Burning",
+        "Campfire",
+        "Equipment Use",
+        "Children",
+        "Arson",
+        "Smoking",
+        "Railroad",
+        "Fireworks",
+        "Structure",
+        "Powerline",
+        "Missing/Undefined"
+      ];
+
+
+      bipartitieArr = [
+
+      ];
 
 
 
@@ -259,7 +271,7 @@
         var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
         coordinates.push(array);
 
-        var str = d.FIRE_YEAR + " " + d.STAT_CAUSE_DESCR;
+        var str = d.STAT_CAUSE_DESCR + " " +  d.FIRE_YEAR;
         // console.log(str);
 
         if (year_and_cause.indexOf(str) == -1) {
@@ -273,15 +285,25 @@
         }
 
 
-
-        // bipartitieArr.push([d.FIRE_YEAR, d.STAT_CAUSE_DESCR, 1, 1]);
-
-
-
-
   		});
 
-      console.log(year_and_cause);
+      for (i = 0; i < year_and_cause.length; i = i + 2) {
+        var arr = [];
+
+        var year_i = year_and_cause[i].length - 4;
+        var cause_i = year_and_cause[i].length - 5;
+        var year = year_and_cause[i].substring(year_i, year_and_cause.length - 1);
+        var cause = year_and_cause[i].substring(0, cause_i);
+
+        arr = [year, cause, year_and_cause[i+1]];
+
+
+        bipartitieArr.push(arr);
+
+      }
+
+
+      // console.log(bipartitieArr);
 
 
 
@@ -317,171 +339,138 @@
 
     function showBiPartite(fire) {
 
+      var width = 1150;
+      var height = 700;
+
       //format of data [year, cause, total num in year, total num of cause in that year]
-      var data = [
-        ['Plus','AL',28648,1419],
-        ['Grand','AL',3,0],
-        ['Lite','CO',13,0],
-        ['Small','CO',396,0],
-        ['Medium','CO',362,0],
-        ['Plus','CO',78,10],
-        ['Grand','CO',2473,32],
-        ['Lite','CA',16,0],
-        ['Small','CA',1278,4],
-        ['Medium','CA',27,0],
-        ['Plus','CA',58,0],
-        ['Medium','AZ',862,0],
-        ['Grand','AZ',6228,30],
-        ['Lite','AL',15001,449],
-        ['Small','AL',527,3],
-        ['Medium','AL',836,0],
-        ['Elite','CO',2063,64],
-        ['Medium','DE',203,0],
-        ['Grand','DE',686,2],
-        ['Elite','DE',826,0],
-        ['Grand','CA',1551,15],
-        ['Elite','CA',141,0],
-        ['Lite','AZ',5453,35],
-        ['Small','AZ',683,1],
-        ['Lite','KS',1738,110],
-        ['Small','KS',12925,13],
-        ['Medium','KS',15413,0],
-        ['Small','GA',2166,2],
-        ['Medium','GA',86,0],
-        ['Plus','GA',348,3],
-        ['Grand','GA',4244,18],
-        ['Elite','GA',1536,1],
-        ['Small','IA',351,0],
-        ['Grand','IA',405,1],
-        ['Small','IL',914,1],
-        ['Medium','IL',127,0],
-        ['Grand','IL',1470,7],
-        ['Elite','IL',516,1],
-        ['Lite','IN',43,0],
-        ['Small','IN',667,1],
-        ['Medium','IN',172,0],
-        ['Plus','IN',149,1],
-        ['Grand','IN',1380,5],
-        ['Elite','IN',791,23],
-        ['Small','FL',1,0],
-        ['Grand','FL',1,0],
-        ['Small','MD',1070,1],
-        ['Grand','MD',1171,2],
-        ['Elite','MD',33,0],
-        ['Plus','TX',1,0],
-        ['Small','MS',407,0],
-        ['Medium','MS',3,0],
-        ['Grand','MS',457,2],
-        ['Elite','MS',20,0],
-        ['Small','NC',557,0],
-        ['Medium','NC',167,0],
-        ['Plus','NC',95,1],
-        ['Grand','NC',1090,5],
-        ['Elite','NC',676,6],
-        ['Lite','NM',1195,99],
-        ['Small','NM',350,3],
-        ['Medium','NM',212,0],
-        ['Grand','NM',1509,8],
-        ['Lite','NV',3899,389],
-        ['Small','NV',147,0],
-        ['Medium','NV',455,0],
-        ['Plus','NV',1,1],
-        ['Grand','NV',4100,16],
-        ['Lite','OH',12,0],
-        ['Small','OH',634,2],
-        ['Medium','OH',749,0],
-        ['Plus','OH',119,1],
-        ['Grand','OH',3705,19],
-        ['Elite','OH',3456,25],
-        ['Small','PA',828,2],
-        ['Medium','PA',288,0],
-        ['Plus','PA',141,0],
-        ['Grand','PA',2625,7],
-        ['Elite','PA',1920,10],
-        ['Small','SC',1146,2],
-        ['Medium','SC',212,0],
-        ['Plus','SC',223,4],
-        ['Grand','SC',1803,6],
-        ['Elite','SC',761,8],
-        ['Small','TN',527,0],
-        ['Medium','TN',90,0],
-        ['Grand','TN',930,4],
-        ['Elite','TN',395,1],
-        ['Lite','ME',7232,58],
-        ['Small','ME',1272,0],
-        ['Medium','ME',1896,0],
-        ['Plus','ME',1,0],
-        ['Grand','ME',10782,33],
-        ['Elite','ME',1911,3],
-        ['Small','VA',495,0],
-        ['Medium','VA',32,0],
-        ['Plus','VA',7,0],
-        ['Grand','VA',1557,12],
-        ['Elite','VA',24,0],
-        ['Small','WA',460,1],
-        ['Plus','WA',88,3],
-        ['Grand','WA',956,3],
-        ['Small','WV',232,0],
-        ['Medium','WV',71,0],
-        ['Grand','WV',575,2],
-        ['Elite','WV',368,3]
-        ];
-      var color ={Elite:"#3366CC", Grand:"#DC3912",  Lite:"#FF9900", Medium:"#109618", Plus:"#990099", Small:"#0099C6"};
+      var data = bipartitieArr;
+      var color = {
+
+        "1992": "#fff",
+        "1993": "#fcedef",
+        "1994": "#f8cad0",
+        "1995": "#f4a7b1",
+        "1996": "#ed7283",
+        "1997": "#e94f64",
+        "1998": "#d1475a",
+        "1999": "#ba3f50",
+        "2000": "#a33746",
+        "2001": "#8b2f3c",
+        "2002": "#742732",
+        "2003": "#5d1f28",
+        "2004": "#572e34",
+        "2005": "#45171e",
+        "2006": "#371218",
+        "2007": "#2e0f14",
+        "2008": "#17070a",
+        "2009": "#000",
+
+
+      };
+
+
+      var svg2 = d3.select("#graph")
+        .append("svg").attr("width", width).attr("height", height)
+        .attr("class", "graph_svg");
+        // .append("g").attr("transform","translate(100,100)");
+        // .call(bp);
+      var g = svg2.append("g").attr("transform","translate(175, 50)");
 
       var bp=viz.bP()
       .data(data)
-      .min(12)
-      .pad(1)
-      .height(600)
+      .min(30)
+  		.pad(1)
+      .height(550)
       .width(900)
       .orient("horizontal")
-      .barSize(35)
+  		.barSize(50)
       .fill(d=>color[d.primary]);
 
-      d3.select("#graph")
-      .append("svg").attr("width", 960).attr("height", 800)
-      .append("g").attr("transform","translate(30,30)")
-      .call(bp);
+      g.call(bp);
+
+      g.selectAll(".mainBars")
+      	.on("mouseover",mouseover)
+      	.on("mouseout",mouseout)
+
+      g.selectAll(".mainBars").append("text").attr("class","label")
+      	.attr("y",d=>(d.part=="primary"? -42: 35))
+      	.attr("x",d=>(d.part=="primary"? 15: 20))
+      	.text(d=>d.key)
+        .attr("fill", "#E4A408")
+        .attr("transform", d=>(d.part=="primary"? "rotate(0)":"rotate(45)"))
+        .style("font-size",  "12px")
+      	.attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
+
+      g.selectAll(".mainBars").append("text").attr("class","perc")
+      	.attr("y",d=>(d.part=="primary"? -27: 45))
+      	.attr("x",d=>(d.part=="primary"? +12: 20))
+        .attr("transform", d=>(d.part=="primary"? "rotate(0)":"rotate(45)"))
+      	.text(function(d){ return d3.format("0.0%")(d.percent)})
+        .style("font-size", "10px")
+        .attr("fill", "#E4A408")
+      	.attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
+
+      function mouseover(d){
+      	bp.mouseover(d);
+        svg2.style("cursor", "pointer");
+      	g.selectAll(".mainBars")
+      	.select(".perc")
+      	.text(function(d){ return d3.format("0.0%")(d.percent)})
+      }
+      function mouseout(d){
+      	bp.mouseout(d);
+      	g.selectAll(".mainBars")
+      		.select(".perc")
+      	.text(function(d){ return d3.format("0.0%")(d.percent)})
+      }
+
+
+      svg2.append("text")
+      .attr("x",105)
+      .attr("y", 85)
+      .style("text-anchor","middle")
+      .style("font-size", "32px")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 1000)
+      .attr("fill", "#E4A408")
+      .text("Years");
+
+
+      svg2.append("text")
+      .attr("x", 105)
+      .attr("y", height - 115)
+      .style("text-anchor","middle")
+      .style("font-size", "32px")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 1000)
+      .attr("fill", "#E4A408")
+      .text("Causes ");
+
+
+
+
+
 
       // adjust height of frameElement in bl.ocks.org
       d3.select(self.frameElement).style("height", "660px");
+
+      //adds title
+
+      // svg2.append("text")
+      // .attr("x",width/2 - 100)
+      // .attr("y", 0)
+      // .attr("class","g_header")
+      // .text("BiPartite Graph of Cause vs. Year")
+      // .attr("transform","translate(-220,-60)")
+      // .style("font-size", "32px")
+      // .style("font-family", "'Lato', sans-serif")
+      // .style("text-transform", "uppercase")
+      // .style("font-weight", 600);
     }
 
 
-
-    function showLandSlide(landslideData) {
-		console.log("== showLandSlide ==", landslideData);
-
-		landslideData.forEach(function(d) {
-			// CSV column names
-			//id,date,time,continent_code,country_name,country_code,state/province,population,city/town,distance,location_description,latitude,longitude,geolocatio
-			//hazard_type,landslide_type,landslide_size,trigger,storm_name,injuries,fatalities,source_name,source_link
-
-			// Only converts those numbers (integers or reals)
-			d.population = +d.population;
-			d.distance = +d.distance;
-			d.latitude = +d.latitude;
-			d.longitude = +d.longitude;
-			d.landslide_size = +d.landslide_size;
-			d.injuries = +d.injuries;
-			d.fatalities = +d.fatalities;
-		});
-
-		var keyCounties = d3.nest()
-		    .key(function(d) { return d["county"]; })  // .sortKeys(d3.ascending)
-    	.entries(landslideData);
-
-    	console.log("Parse based on county == ", keyCounties);
-
-		keyCounties.forEach(function(county) {
-
-      console.log(county.values.length);
-
-
-		});
-
-
-    }
 
 
 
