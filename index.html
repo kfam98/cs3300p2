@@ -172,19 +172,21 @@
         .on("mouseover", function(d){
          //tooltip
           div.transition()
-            .duration(200)
+            .duration(100)
             .style("opacity", .9);
           div.html(d.properties.fullName)
             .style("left", (d3.event.pageX  ) + "px")
             .style("top", (d3.event.pageY - 9) + "px");
             // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
+            d3.event.stopPropagation();
 
         })
         .on("mouseout", function(d) {
           div.transition()
-            .duration(300)
+            .duration(100)
             .style("opacity", 0.0);
-        });
+            d3.event.stopPropagation();
+        })
 
       //exterior border
       svg.append("path")
@@ -197,6 +199,60 @@
       var div = d3.select("#map_ca").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
+
+        //adds title
+
+      svg.append("text")
+      .attr("x", 690)
+      .attr("y", 125)
+      // .attr("class","g_header")
+      .text("Wildfires")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "32px")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .attr("fill", "#E4A408")
+      .style("font-weight", 600);
+
+      svg.append("text")
+      .attr("x", 690)
+      .attr("y", 150)
+      // .attr("class","g_header")
+      .text("in California")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "32px")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .attr("fill", "#E4A408")
+      .style("font-weight", 600);
+
+
+      svg.append("text")
+      .attr("x", 800)
+      .attr("y", 175)
+      // .attr("class","g_header")
+      .text("from 1992-2007")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "28px")
+      .attr("fill", "#E94F64")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
+
+
+      svg.append("text")
+      .attr("x", 800)
+      .attr("y", 190)
+      // .attr("class","g_header")
+      .text("Based on Fire Size in acres")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "14px")
+      .attr("fill", "#E4A408")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
+
+
 
     }
 
@@ -279,7 +335,7 @@
   			d.LONGITUDE = +d.LONGITUDE;
   			d.FIRE_SIZE = +d.FIRE_SIZE;
 
-        if (circles < 2000) {
+        if (circles < 40000) {
           var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
           coordinates.push(array);
         }
@@ -346,6 +402,36 @@
           // return rScale(d[3]);
           else {return "#E94F64";}
         });
+
+
+        //key
+        var legendCircles = svg.selectAll("circle")
+          .data([[575, 175, .5],[575, 200, 1000], [575, 230, 10000], [575, 270, 150000]]);
+
+        // var legendCircles = svg.selectAll("circle")
+        //   .data([[575, 175, .5],[575, 200, 1000], [575, 230, 10000], [575, 270, 150000]]);
+
+
+        legendCircles.enter()
+          .append("circle")
+          .merge(legendCircles)
+          .attr("r", function(d) {
+            if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
+            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
+            else if((d[2] > 10000)) {return 12;}
+
+            // return rScale(d[3]);
+            else {return rScale(d[2]);}
+          })
+          .attr("cx", function(d) { return d[0]; })
+          .attr("cy", function(d) { return d[1]; })
+          .attr("fill", function(d) {
+            if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
+            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
+            else if ((d[2] > 10000)) { return "#f2b593"; }
+            // return rScale(d[3]);
+            else {return "#E94F64";}
+          });
 
 
 
@@ -470,18 +556,7 @@
       // adjust height of frameElement in bl.ocks.org
       d3.select(self.frameElement).style("height", "660px");
 
-      //adds title
 
-      // svg2.append("text")
-      // .attr("x",width/2 - 100)
-      // .attr("y", 0)
-      // .attr("class","g_header")
-      // .text("BiPartite Graph of Cause vs. Year")
-      // .attr("transform","translate(-220,-60)")
-      // .style("font-size", "32px")
-      // .style("font-family", "'Lato', sans-serif")
-      // .style("text-transform", "uppercase")
-      // .style("font-weight", 600);
     }
 
 

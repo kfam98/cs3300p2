@@ -223,14 +223,14 @@ body {
 }
 
 /* controlling subunits/red parts  */
-.subunit.San.Francisco,
+/* .subunit.San.Francisco,
 .subunit.mateo,
 .subunit.alameda,
 .subunit.santa.clara {
   fill: maroon;
   stroke: #d3d3d3;
   stroke-linejoin: round;
-}
+} */
 
 .subunit {
   fill: #d3d3d3;
