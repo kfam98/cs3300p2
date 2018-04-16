@@ -136,7 +136,7 @@ body {
 }
 
 #map_about {
-  height: 64%;
+  height: 100%;
   width: 100%;
   float: left;
   /* margin-top: 5%; */
@@ -144,27 +144,29 @@ body {
 }
 
 
-#map_stats {
+/* #map_stats {
   float: left;
   width: 100%;
   height: 34%;
   margin-top: 1%;
   margin-bottom: 3%;
-}
+} */
 
 #map_title {
     color: #E94F64;
     font-weight: 1000;
+    /* font-size: 17px; */
 }
 
-.map_description_bg {
+/* .map_description_bg {
   background-color: #E94F64;
   opacity: .2;
   width: 100%;
-}
+} */
 
 .map_description {
   padding: 10%;
+  height: 100%;
 }
 
 #map_ca {

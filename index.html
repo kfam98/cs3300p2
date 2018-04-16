@@ -12,6 +12,7 @@
     <script src="http://vizjs.org/viz.v1.1.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato:400" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style/style.css" media="all"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>California Wildfires</title>
 
 </head>
@@ -32,9 +33,9 @@
   <div class="section_parent">
   <div class="section"  id="map_about">
       <div class="map_description">
-        <div class="map_description_bg"></div>
+        <!-- <div class="map_description_bg"></div> -->
         <span id="map_title" class="section_title graph_title" >
-        Wildfires in California</span>
+        Wildfire Causes and Fire Size Trends</span>
         <!-- <div class="line" id="line3"></div> -->
         <p>
         Where fire catches, destruction occurs. This is evident in
@@ -42,6 +43,12 @@
         terrain and climate make it a common victim of such destructive
         forest fires. The unqiuely dry seasons and plentiful
         forests allow for wildfires to spread up to over 170,000 acres.
+
+        <br/>
+        <br/>
+        In particular, the large number of wildfires is prevelant in
+        the mountain regions. These mountain regions are occupied by
+        masses of forests.
 
         </p>
 
@@ -52,8 +59,8 @@
 
     </div>
 
-  <div class="section" id="map_stats">
-  </div>
+  <!-- <div class="section" id="map_stats">
+  </div> -->
 </div>
 
   <div class="section" id="map_ca">
@@ -65,12 +72,17 @@
   <div class="section"  id="graph">
     <div class="graph_description">
       <span class="section_title graph_title" id="graph_title" >
-      YEAR vs. CAUSE BIPARTITE GRAPH</span>
+      Human Intervention Prevalant in Wildfire Causes</span>
       <!-- <div class="line" id="line4"></div> -->
       <p>
         Over the years, fires have been categorized by causes such as by
         lightening, debris burning, and more. A majority of these wildfires
-        are caused by human intervention.
+        are revealed to be caused by human intervention. From 1992 to 2009,
+        natural wildfire causes seemingly decrease over the years. Namely,
+        in the earlier years, lightening was a big trigger for wildfires.
+        Now, in the later years, the combination of other human causes
+        (arson, campfires, etc.) dominate the causes of wildfires.
+
       </p>
     </div>
 
@@ -129,11 +141,10 @@
 
       d3.queue()
         .defer(d3.json, ("datasets/CACounties.json"))
-        .defer(d3.csv, ("datasets/Landslides.csv"))
         .defer(d3.csv, ("datasets/NewFires.csv"))
         .await(callback);
 
-        function callback(error, ca, landslide, fire) {
+        function callback(error, ca, fire) {
           showCA(ca);
           showFire(fire);
           showBiPartite(fire);
@@ -441,7 +452,7 @@ function reset() {
       	.attr("y",d=>(d.part=="primary"? -27: 45))
       	.attr("x",d=>(d.part=="primary"? +12: 20))
         .attr("transform", d=>(d.part=="primary"? "rotate(0)":"rotate(45)"))
-      	.text(function(d){ return d3.format("0.0%")(d.percent)})
+      	.text(function(d){ return (d3.format(".2f")(d.percent * 100)) + "%"})
         .style("font-size", "10px")
         .attr("fill", "#E4A408")
       	.attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
@@ -451,13 +462,13 @@ function reset() {
         svg2.style("cursor", "pointer");
       	g.selectAll(".mainBars")
       	.select(".perc")
-      	.text(function(d){ return d3.format("0.0%")(d.percent)})
+      	.text(function(d){ return (d3.format(".2f")(d.percent * 100)) + "%"})
       }
       function mouseout(d){
       	bp.mouseout(d);
       	g.selectAll(".mainBars")
       		.select(".perc")
-      	.text(function(d){ return d3.format("0.0%")(d.percent)})
+      	.text(function(d){ return (d3.format(".2f")(d.percent * 100)) + "%"})
       }
 
 
