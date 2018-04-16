@@ -182,6 +182,17 @@ body {
 
 }
 
+/* zoom styling */
+
+.feature {
+  fill: #ccc;
+  cursor: pointer;
+}
+
+.feature.active {
+  fill: orange;
+}
+
 
 /* graph styling */
 

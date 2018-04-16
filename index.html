@@ -102,6 +102,7 @@
       var width = 848;
       //console.log("Here!!");
       var height = 725;
+      var active = d3.select(null);
 
       var projection = d3.geo.mercator()
       .scale(3000)
@@ -153,17 +154,18 @@
         }
 
 
-
+var g;
 
     function showCA(ca) {
 
       //console.log(ca.objects.caCounties); //for navigating the data in the console
-      svg.append("path")
-        .datum(topojson.feature(ca, ca.objects.subunits))
-        .attr("class", "land")
-        .attr("d", path);
+
+
+
+      g = svg.append("g")
+        .style("stroke-width", "1.5px");
       //bind feature data to the map
-      svg.selectAll(".subunit")
+      g.selectAll(".subunit")
           .data(topojson.feature(ca, ca.objects.subunits).features)
         .enter().append("path")
         .attr("class", function(d) { return "subunit " + d.properties.name; })
@@ -185,15 +187,20 @@
           div.transition()
             .duration(100)
             .style("opacity", 0.0);
+<<<<<<< HEAD
             d3.event.stopPropagation();
         })
+=======
+        })
+        .on("click", clicked);
+>>>>>>> 1c1504c37512c0afa960c9adb00baa2dcff26fac
 
       //exterior border
-      svg.append("path")
+      g.append("path")
         .datum(topojson.mesh(ca, ca.objects.subunits, function(a, b) { return a === b;}))
         .attr("d", path)
         .attr("stroke-opacity", 0.3)
-        .attr("class", "exterior-boundary");
+        .attr("class", "exterior-boundary")
 
       //tooltop declaration
       var div = d3.select("#map_ca").append("div")
@@ -255,6 +262,38 @@
 
 
     }
+
+    function clicked(d) {
+      console.log("here");
+  if (active.node() === this) return reset();
+  console.log("there");
+  active.classed("active", false);
+  active = d3.select(this).classed("active", true);
+
+  var bounds = path.bounds(d),
+      dx = bounds[1][0] - bounds[0][0],
+      dy = bounds[1][1] - bounds[0][1],
+      x = (bounds[0][0] + bounds[1][0]) / 2,
+      y = (bounds[0][1] + bounds[1][1]) / 2,
+      scale = .9 / Math.max(dx / width, dy / height),
+      translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+  g.transition()
+      .duration(750)
+      .style("stroke-width", 1.5 / scale + "px")
+      .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+}
+
+function reset() {
+  active.classed("active", false);
+  active = d3.select(null);
+
+  g.transition()
+      .duration(750)
+      .style("stroke-width", "1.5px")
+      .attr("transform", "");
+}
+
 
 
 
@@ -378,7 +417,7 @@
 
 
 
-      var circles = svg.selectAll("circle")
+      var circles = g.selectAll("circle")
         .data(coordinates);
 
 
@@ -401,6 +440,7 @@
           else if ((d[2] > 10000)) { return "#f2b593"; }
           // return rScale(d[3]);
           else {return "#E94F64";}
+<<<<<<< HEAD
         });
 
 
@@ -434,6 +474,9 @@
           });
 
 
+=======
+        })
+>>>>>>> 1c1504c37512c0afa960c9adb00baa2dcff26fac
 
     }
 
