@@ -260,7 +260,7 @@ var g;
 
         svg.append("text")
         .attr("x", 265)
-        .attr("y", 445)
+        .attr("y", 435)
         .attr("class","legend")
         .text("Causes")
         .attr("transform","translate(-220,-60)")
@@ -270,18 +270,40 @@ var g;
         .style("text-transform", "uppercase")
         .style("font-weight", 600);
 
+        svg.append("text")
+        .attr("x", 268)
+        .attr("y", 445)
+        .attr("class","legend")
+        .text("(Click to Filter)")
+        .attr("transform","translate(-220,-60)")
+        .style("font-size", "10px")
+        .attr("fill",  "#E94F64")
+        .style("font-family", "'Lato', sans-serif")
+        .style("text-transform", "uppercase")
+        .style("font-weight", 600);
+
+        svg.append("rect")
+            .attr("x", 580)
+            .attr("y", 160)
+            .attr("class", "legend l_rect")
+            .attr("fill", "white")
+            .style("opacity", ".1")
+            .attr("width", 200)
+            .attr("height", 150);
+
+
 
 
         //key
         var legendCircles = svg.selectAll("circle")
-          .data([[590, 175, .5],[586, 200, 1000], [582, 230, 10000], [580, 270, 150000]]);
+          .data([[615, 178, .5],[613, 203, 1000], [610, 233, 10000], [608, 273, 150000]]);
 
         var legendText = svg.selectAll("circle")
           .data([
-          [598, 180, "Less than 1 acre"],
-          [598, 210, "Between 1-1000 acres"],
-          [598, 240, "Between 1k - 10k acres"],
-          [598, 275, "More than 10k acres"],
+          [624, 182, "Less than 1 acre"],
+          [624, 210, "Between 1-1000 acres"],
+          [624, 240, "Between 1k - 10k acres"],
+          [624, 277, "More than 10k acres"],
 
         ]);
 
@@ -411,6 +433,10 @@ var g;
       svg.selectAll(".m_header")
       .style("opacity", "0")
       .style("transition", "opacity 1s");
+
+      svg.selectAll(".l_rect")
+      .style("opacity", "0")
+      .style("transition", "opacity 1s");
       }
 
     function reset() {
@@ -428,7 +454,10 @@ var g;
 
      svg.selectAll(".m_header")
      .style("opacity", ".9")
-     .style("transition", "opacity 5s");
+     // .style("transition", "opacity 5s");
+
+     svg.selectAll(".l_rect")
+     .style("opacity", ".1");
 
 
     }
