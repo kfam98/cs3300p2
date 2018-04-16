@@ -272,3 +272,16 @@ div.tooltip {
   border-radius: 8px;
   pointer-events: none;
 }
+
+div2.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  padding: 10px;
+  font: 12px sans-serif;
+  color: #f7f7f7;
+  background: #E94F64;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
