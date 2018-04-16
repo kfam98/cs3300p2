@@ -98,72 +98,50 @@
 
 
     <script>
-
       var width = 848;
       //console.log("Here!!");
+      var curr_cause = "All";
       var height = 725;
       var active = d3.select(null);
-
       var projection = d3.geo.mercator()
       .scale(3000)
       .center([-120, 36])
       .translate([width/2, height/2 + 100]);
-
       var clickedBool = false;
-
       //an array containing coordinates [long, lat]
       var coordinates = [];
       //an array containing [cause, total, ...]
       var causes = [];
       //an array containing [[year, cause, total num in year, total num of cause in that year], ...]
-
-
       var bipartitieArr = [];
-
       var years = [];
+      var zoomed = false;
       //var projection = d3.geo.albersUsa() //works but tried another method above
       //  .scale(2500)
       //  .translate([1000, 360]);
-
       var year_and_cause = [];
-
       var rScale = d3.scaleSqrt()
         .domain([0.0, 1])
         .range([1, 3]);
-
-
       var path = d3.geo.path()
         .projection(projection);
-
       var svg = d3.select("#map_ca").append("svg")
-
         .attr("width", width)
         .attr("height", height);
         // .attr("translate", "(-50, 0);");
-
       d3.queue()
         .defer(d3.json, ("datasets/CACounties.json"))
         .defer(d3.csv, ("datasets/NewFires.csv"))
         .await(callback);
-
         function callback(error, ca, fire) {
           showCA(ca, fire);
           showFire(fire);
           showBiPartite(fire);
-
-
-
         }
-
-
 var g;
 
     function showCA(ca, fireData) {
-
       //console.log(ca.objects.caCounties); //for navigating the data in the console
-
-
-
       g = svg.append("g")
         .style("stroke-width", "1.5px");
       //bind feature data to the map
@@ -183,7 +161,6 @@ var g;
             .style("top", (d3.event.pageY - 9) + "px");
             // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
             d3.event.stopPropagation();
-
         })
         .on("mouseout", function(d) {
           div.transition()
@@ -192,22 +169,17 @@ var g;
             d3.event.stopPropagation();
         })
         .on("click", clicked);
-
-
       //exterior border
       g.append("path")
         .datum(topojson.mesh(ca, ca.objects.subunits, function(a, b) { return a === b;}))
         .attr("d", path)
         .attr("stroke-opacity", 0.3)
         .attr("class", "exterior-boundary")
-
       //tooltop declaration
       var div = d3.select("#map_ca").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
-
         //adds title
-
         svg.append("text")
         .attr("x", 690)
         .attr("y",140)
@@ -219,7 +191,6 @@ var g;
         .style("text-transform", "uppercase")
         .attr("fill", "#E4A408")
         .style("font-weight", 600);
-
         svg.append("text")
         .attr("x", 690)
         .attr("y", 165)
@@ -231,8 +202,6 @@ var g;
         .style("text-transform", "uppercase")
         .attr("fill", "#E4A408")
         .style("font-weight", 600);
-
-
         svg.append("text")
         .attr("x", 800)
         .attr("y", 190)
@@ -244,8 +213,6 @@ var g;
         .style("font-family", "'Lato', sans-serif")
         .style("text-transform", "uppercase")
         .style("font-weight", 600);
-
-
         svg.append("text")
         .attr("x", 800)
         .attr("y", 205)
@@ -257,7 +224,6 @@ var g;
         .style("font-family", "'Lato', sans-serif")
         .style("text-transform", "uppercase")
         .style("font-weight", 600);
-
         svg.append("text")
         .attr("x", 265)
         .attr("y", 435)
@@ -306,7 +272,6 @@ var g;
           [624, 277, "More than 10k acres"],
 
         ]);
-
         var causeText = svg.selectAll("circle")
         .data([
         [50, 410, "Miscellaneous"],
@@ -324,7 +289,6 @@ var g;
         [50, 626,"Missing/Undefined"],
         [50, 644,"All"]
       ]);
-
         legendText.enter()
           .append("text")
           .merge(legendText)
@@ -358,24 +322,30 @@ var g;
               return d[2];
             })
             .style("font-size", "16px")
-            .attr("fill", "#e9d44f")
+            .attr("fill", function(d) {
+              if ((d == "All") && (curr_cause == "All")) {
+                return "FFF";
+              } else {
+                return "#e9d44f";
+              }
+            })
             .style("font-family", "'Lato', sans-serif")
             .style("text-transform", "uppercase")
             .style("font-weight", 600)
             .on("mouseover", function(d) {
-              d3.select(this).style("opacity", ".5").style("cursor", "pointer");
+              if (!(zoomed)) {
+                d3.select(this).style("opacity", ".5").style("cursor", "pointer");
+              }
             })
             .on("mouseout", function(d) {
+              if (!(zoomed)) {
               d3.select(this).style("opacity", ".9").style("cursor", "none");
+            }
             })
             .on("click", function(d) {
               clickedBool = true;
-              circlesAppear(fireData, this.text);
+              circlesAppear(fireData, d[2]);
             });
-
-
-
-
         legendCircles.enter()
           .append("circle")
           .merge(legendCircles)
@@ -384,7 +354,6 @@ var g;
             if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
             else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
             else if((d[2] > 10000)) {return 12;}
-
             // return rScale(d[3]);
             else {return rScale(d[2]);}
           })
@@ -397,22 +366,13 @@ var g;
             // return rScale(d[3]);
             else {return "#E94F64";}
           });
-
-
-
-
-
-
-
     }
-
     function clicked(d) {
       // console.log("here");
       if (active.node() === this) return reset();
       // console.log("there");
       active.classed("active", false);
       active = d3.select(this).classed("active", true);
-
       var bounds = path.bounds(d),
           dx = bounds[1][0] - bounds[0][0],
           dy = bounds[1][1] - bounds[0][1],
@@ -420,83 +380,64 @@ var g;
           y = (bounds[0][1] + bounds[1][1]) / 2,
           scale = .9 / Math.max(dx / width, dy / height),
           translate = [width / 2 - scale * x, height / 2 - scale * y];
-
       g.transition()
           .duration(750)
           .style("stroke-width", 1.5 / scale + "px")
           .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-
       svg.selectAll(".legend")
       .style("opacity", "0")
       .style("transition", "opacity 1s");
-
       svg.selectAll(".m_header")
       .style("opacity", "0")
       .style("transition", "opacity 1s");
-
-      svg.selectAll(".l_rect")
-      .style("opacity", "0")
-      .style("transition", "opacity 1s");
+      clicked = true;
+      zoomed = true;
       }
-
     function reset() {
       active.classed("active", false);
       active = d3.select(null);
-
       g.transition()
           .duration(750)
           .style("stroke-width", "1.5px")
           .attr("transform", "");
-
      svg.selectAll(".legend")
-     .style("opacity", ".9")
+     .style("opacity", ".9");
      // .style("transition", "opacity 5s")
-
      svg.selectAll(".m_header")
-     .style("opacity", ".9")
+     .style("opacity", ".9");
      // .style("transition", "opacity 5s");
 
      svg.selectAll(".l_rect")
      .style("opacity", ".1");
 
+     zoomed=false;
+
 
     }
-
     function circlesAppear(fireData, cause) {
-
       var c = d3.selectAll(".mapCircs").remove();
       coordinates = [];
       circles = 0;
+      curr_cause = cause;
       fireData.forEach(function(d) {
-
         d.LATITUDE = +d.LATITUDE;
         d.LONGITUDE = +d.LONGITUDE;
         d.FIRE_SIZE = +d.FIRE_SIZE;
-
-
       if (circles < 40000) {
         if (cause == "All") {
-          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
+          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE, d.FIRE_NAME, d.FIRE_YEAR];
           coordinates.push(array);
           circles++;
         }
         else if (d.STAT_CAUSE_DESCR == cause) {
-          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
+          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE, d.FIRE_NAME, d.FIRE_YEAR];
           coordinates.push(array);
           circles++;
         }
-
       }
-
-
     })
-
-
-
     var circles = g.selectAll("circle")
       .data(coordinates);
-
-
     circles.enter()
       .append("circle")
       .attr("class", "mapCircs")
@@ -504,7 +445,6 @@ var g;
         if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
         else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
         else if((d[2] > 10000)) {return 12;}
-
         // return rScale(d[3]);
         else {return rScale(d[2]);}
       })
@@ -517,21 +457,39 @@ var g;
         else if ((d[2] > 10000)) { return "#f2b593"; }
         // return rScale(d[3]);
         else {return "#E94F64";}
+      })
+      .on("mouseover", function(d){
+       //tooltip
+        div2.transition()
+          .duration(100)
+          .style("opacity", function(d) {
+            if(zoomed) { return 0.9;}
+            else { return 0.0;}
+          });
+        div2.html(d[3] + " (" + d[4] +")")
+          .style("left", (d3.event.pageX  ) + "px")
+          .style("top", (d3.event.pageY - 9) + "px");
+          // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
+          if (zoomed) {d3.select(this).style("opacity", ".5")};
+          d3.event.stopPropagation();
+      })
+      .on("mouseout", function(d) {
+        div2.transition()
+          .duration(100)
+          .style("opacity", 0.0);
+          if (zoomed) {d3.select(this).style("opacity", ".9");}
+          d3.event.stopPropagation();
+      })
 
-      });
-
-       var svg_t = d3.select("body").transition();
-       svg_t.duration(750);
+    //tooltop declaration
+    var div2 = d3.select("#map_ca").append("div2")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
 
 
     }
 
-
-
-
-
     function showFire(fireData) {
-
       causes = [
         "Miscellaneous", 12099,
         "Lightning", 17451,
@@ -547,7 +505,6 @@ var g;
         "Powerline", 743,
         "Missing/Undefined", 295
       ];
-
       years = [
         1992, 4072,
         1993, 2406,
@@ -568,12 +525,10 @@ var g;
         2008, 2175,
         2009, 2101,
       ];
-
       years_nototal = [
         1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
         2004, 2005, 2006, 2007, 2008, 2009
       ];
-
       causes_nototal = [
         "Miscellaneous",
         "Lightning",
@@ -589,28 +544,16 @@ var g;
         "Powerline",
         "Missing/Undefined"
       ];
-
-
       bipartitieArr = [
-
       ];
-
-
-
-
       var circles = 0;
       fireData.forEach(function(d) {
-
   			// d.FIRE_YEAR = +d.FIRE_YEAR;
   			d.LATITUDE = +d.LATITUDE;
   			d.LONGITUDE = +d.LONGITUDE;
   			d.FIRE_SIZE = +d.FIRE_SIZE;
-
-
-
         var str = d.STAT_CAUSE_DESCR + " " +  d.FIRE_YEAR;
         // console.log(str);
-
         if (year_and_cause.indexOf(str) == -1) {
           year_and_cause.push(str);
           year_and_cause.push(1);
@@ -620,52 +563,28 @@ var g;
           var num = year_and_cause[i + 1];
           year_and_cause[i + 1] = num + 1;
         }
-
-
   		});
-
       for (i = 0; i < year_and_cause.length; i = i + 2) {
         var arr = [];
-
         var year_i = year_and_cause[i].length - 4;
         var cause_i = year_and_cause[i].length - 5;
         var year = year_and_cause[i].substring(year_i, year_and_cause.length - 1);
         var cause = year_and_cause[i].substring(0, cause_i);
-
         arr = [year, cause, year_and_cause[i+1]];
-
-
         bipartitieArr.push(arr);
-
       }
-
 
       if (!(clickedBool)) {
-
         circlesAppear(fireData, "All");
       }
-
       // console.log(bipartitieArr);
-
-
-
-
-
-
-
-
-
     }
-
     function showBiPartite(fire) {
-
       var width = 1150;
       var height = 700;
-
       //format of data [year, cause, total num in year, total num of cause in that year]
       var data = bipartitieArr;
       var color = {
-
         "1992": "#E5DD00",
         "1993": "#E2D001",
         "1994": "#E0C302",
@@ -684,18 +603,13 @@ var g;
         "2007": "#C31A14",
         "2008": "#C10D15",
         "2009": "#BF0017",
-
-
       };
-
-
       var svg2 = d3.select("#graph")
         .append("svg").attr("width", width).attr("height", height)
         .attr("class", "graph_svg");
         // .append("g").attr("transform","translate(100,100)");
         // .call(bp);
       var g = svg2.append("g").attr("transform","translate(175, 50)");
-
       var bp=viz.bP()
       .data(data)
       .min(30)
@@ -705,13 +619,10 @@ var g;
       .orient("horizontal")
   		.barSize(50)
       .fill(d=>color[d.primary]);
-
       g.call(bp);
-
       g.selectAll(".mainBars")
       	.on("mouseover",mouseover)
       	.on("mouseout",mouseout)
-
       g.selectAll(".mainBars").append("text").attr("class","label")
       	.attr("y",d=>(d.part=="primary"? -42: 35))
       	.attr("x",d=>(d.part=="primary"? 15: 20))
@@ -720,7 +631,6 @@ var g;
         .attr("transform", d=>(d.part=="primary"? "rotate(0)":"rotate(45)"))
         .style("font-size",  "12px")
       	.attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
-
       g.selectAll(".mainBars").append("text").attr("class","perc")
       	.attr("y",d=>(d.part=="primary"? -27: 45))
       	.attr("x",d=>(d.part=="primary"? +12: 20))
@@ -729,7 +639,6 @@ var g;
         .style("font-size", "10px")
         .attr("fill", "#E4A408")
       	.attr("text-anchor",d=>(d.part=="primary"? "end": "start"));
-
       function mouseover(d){
       	bp.mouseover(d);
         svg2.style("cursor", "pointer");
@@ -743,8 +652,6 @@ var g;
       		.select(".perc")
       	.text(function(d){ return (d3.format(".2f")(d.percent * 100)) + "%"})
       }
-
-
       svg2.append("text")
       .attr("x",105)
       .attr("y", 85)
@@ -755,8 +662,6 @@ var g;
       .style("font-weight", 1000)
       .attr("fill", "#E4A408")
       .text("Years");
-
-
       svg2.append("text")
       .attr("x", 105)
       .attr("y", height - 115)
@@ -767,23 +672,9 @@ var g;
       .style("font-weight", 1000)
       .attr("fill", "#E4A408")
       .text("Causes ");
-
-
-
-
-
-
       // adjust height of frameElement in bl.ocks.org
       d3.select(self.frameElement).style("height", "660px");
-
-
     }
-
-
-
-
-
-
     </script>
 
 </body>
