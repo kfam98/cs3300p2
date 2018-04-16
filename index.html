@@ -187,13 +187,10 @@ var g;
           div.transition()
             .duration(100)
             .style("opacity", 0.0);
-<<<<<<< HEAD
             d3.event.stopPropagation();
         })
-=======
-        })
         .on("click", clicked);
->>>>>>> 1c1504c37512c0afa960c9adb00baa2dcff26fac
+
 
       //exterior border
       g.append("path")
@@ -209,90 +206,163 @@ var g;
 
         //adds title
 
-      svg.append("text")
-      .attr("x", 690)
-      .attr("y", 125)
-      // .attr("class","g_header")
-      .text("Wildfires")
-      .attr("transform","translate(-220,-60)")
-      .style("font-size", "32px")
-      .style("font-family", "'Lato', sans-serif")
-      .style("text-transform", "uppercase")
-      .attr("fill", "#E4A408")
-      .style("font-weight", 600);
+        svg.append("text")
+        .attr("x", 690)
+        .attr("y", 125)
+        .attr("class","m_header")
+        .text("Wildfires")
+        .attr("transform","translate(-220,-60)")
+        .style("font-size", "32px")
+        .style("font-family", "'Lato', sans-serif")
+        .style("text-transform", "uppercase")
+        .attr("fill", "#E4A408")
+        .style("font-weight", 600);
 
-      svg.append("text")
-      .attr("x", 690)
-      .attr("y", 150)
-      // .attr("class","g_header")
-      .text("in California")
-      .attr("transform","translate(-220,-60)")
-      .style("font-size", "32px")
-      .style("font-family", "'Lato', sans-serif")
-      .style("text-transform", "uppercase")
-      .attr("fill", "#E4A408")
-      .style("font-weight", 600);
-
-
-      svg.append("text")
-      .attr("x", 800)
-      .attr("y", 175)
-      // .attr("class","g_header")
-      .text("from 1992-2007")
-      .attr("transform","translate(-220,-60)")
-      .style("font-size", "28px")
-      .attr("fill", "#E94F64")
-      .style("font-family", "'Lato', sans-serif")
-      .style("text-transform", "uppercase")
-      .style("font-weight", 600);
+        svg.append("text")
+        .attr("x", 690)
+        .attr("y", 150)
+        .attr("class","m_header")
+        .text("in California")
+        .attr("transform","translate(-220,-60)")
+        .style("font-size", "32px")
+        .style("font-family", "'Lato', sans-serif")
+        .style("text-transform", "uppercase")
+        .attr("fill", "#E4A408")
+        .style("font-weight", 600);
 
 
-      svg.append("text")
-      .attr("x", 800)
-      .attr("y", 190)
-      // .attr("class","g_header")
-      .text("Based on Fire Size in acres")
-      .attr("transform","translate(-220,-60)")
-      .style("font-size", "14px")
-      .attr("fill", "#E4A408")
-      .style("font-family", "'Lato', sans-serif")
-      .style("text-transform", "uppercase")
-      .style("font-weight", 600);
+        svg.append("text")
+        .attr("x", 800)
+        .attr("y", 175)
+        .attr("class","m_header")
+        .text("from 1992-2007")
+        .attr("transform","translate(-220,-60)")
+        .style("font-size", "28px")
+        .attr("fill", "#E94F64")
+        .style("font-family", "'Lato', sans-serif")
+        .style("text-transform", "uppercase")
+        .style("font-weight", 600);
+
+
+        svg.append("text")
+        .attr("x", 800)
+        .attr("y", 190)
+        .attr("class","m_header")
+        .text("Based on Fire Size in acres")
+        .attr("transform","translate(-220,-60)")
+        .style("font-size", "14px")
+        .attr("fill", "#E4A408")
+        .style("font-family", "'Lato', sans-serif")
+        .style("text-transform", "uppercase")
+        .style("font-weight", 600);
+
+
+
+        //key
+        var legendCircles = svg.selectAll("circle")
+          .data([[590, 175, .5],[586, 200, 1000], [582, 230, 10000], [580, 270, 150000]]);
+
+        var legendText = svg.selectAll("circle")
+          .data([
+          [598, 180, "Less than 1 acre"],
+          [598, 210, "Between 1-1000 acres"],
+          [598, 240, "Between 1k - 10k acres"],
+          [598, 275, "More than 10k acres"]]);
+
+          legendText.enter()
+            .append("text")
+            .merge(legendText)
+            .attr("class","legend")
+            .attr("x", function (d) {
+              return d[0];
+            })
+            .attr("y", function (d) {
+              return d[1];
+            })
+            .text(function (d) {
+              return d[2];
+            })
+            .style("font-size", "10px")
+            .attr("fill", "#f7f7f7")
+            .style("font-family", "'Lato', sans-serif")
+            .style("text-transform", "uppercase")
+            .style("font-weight", 600);
+
+
+
+        legendCircles.enter()
+          .append("circle")
+          .merge(legendCircles)
+          .attr("class","legend")
+          .attr("r", function(d) {
+            if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
+            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
+            else if((d[2] > 10000)) {return 12;}
+
+            // return rScale(d[3]);
+            else {return rScale(d[2]);}
+          })
+          .attr("cx", function(d) { return d[0]; })
+          .attr("cy", function(d) { return d[1]; })
+          .attr("fill", function(d) {
+            if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
+            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
+            else if ((d[2] > 10000)) { return "#f2b593"; }
+            // return rScale(d[3]);
+            else {return "#E94F64";}
+          });
+
 
 
 
     }
 
     function clicked(d) {
-      console.log("here");
-  if (active.node() === this) return reset();
-  console.log("there");
-  active.classed("active", false);
-  active = d3.select(this).classed("active", true);
+      // console.log("here");
+      if (active.node() === this) return reset();
+      console.log("there");
+      active.classed("active", false);
+      active = d3.select(this).classed("active", true);
 
-  var bounds = path.bounds(d),
-      dx = bounds[1][0] - bounds[0][0],
-      dy = bounds[1][1] - bounds[0][1],
-      x = (bounds[0][0] + bounds[1][0]) / 2,
-      y = (bounds[0][1] + bounds[1][1]) / 2,
-      scale = .9 / Math.max(dx / width, dy / height),
-      translate = [width / 2 - scale * x, height / 2 - scale * y];
+      var bounds = path.bounds(d),
+          dx = bounds[1][0] - bounds[0][0],
+          dy = bounds[1][1] - bounds[0][1],
+          x = (bounds[0][0] + bounds[1][0]) / 2,
+          y = (bounds[0][1] + bounds[1][1]) / 2,
+          scale = .9 / Math.max(dx / width, dy / height),
+          translate = [width / 2 - scale * x, height / 2 - scale * y];
 
-  g.transition()
-      .duration(750)
-      .style("stroke-width", 1.5 / scale + "px")
-      .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-}
+      g.transition()
+          .duration(750)
+          .style("stroke-width", 1.5 / scale + "px")
+          .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
 
-function reset() {
-  active.classed("active", false);
-  active = d3.select(null);
+      svg.selectAll(".legend")
+      .style("opacity", "0")
+      .style("transition", "opacity 1s");
 
-  g.transition()
-      .duration(750)
-      .style("stroke-width", "1.5px")
-      .attr("transform", "");
-}
+      svg.selectAll(".m_header")
+      .style("opacity", "0")
+      .style("transition", "opacity 1s");
+      }
+
+    function reset() {
+      active.classed("active", false);
+      active = d3.select(null);
+
+      g.transition()
+          .duration(750)
+          .style("stroke-width", "1.5px")
+          .attr("transform", "");
+
+     svg.selectAll(".legend")
+     .style("opacity", ".9")
+     .style("transition", "opacity 5s");
+
+     svg.selectAll(".m_header")
+     .style("opacity", ".9")
+     .style("transition", "opacity 5s");
+    }
 
 
 
@@ -440,43 +510,13 @@ function reset() {
           else if ((d[2] > 10000)) { return "#f2b593"; }
           // return rScale(d[3]);
           else {return "#E94F64";}
-<<<<<<< HEAD
+
         });
 
 
-        //key
-        var legendCircles = svg.selectAll("circle")
-          .data([[575, 175, .5],[575, 200, 1000], [575, 230, 10000], [575, 270, 150000]]);
-
-        // var legendCircles = svg.selectAll("circle")
-        //   .data([[575, 175, .5],[575, 200, 1000], [575, 230, 10000], [575, 270, 150000]]);
 
 
-        legendCircles.enter()
-          .append("circle")
-          .merge(legendCircles)
-          .attr("r", function(d) {
-            if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
-            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
-            else if((d[2] > 10000)) {return 12;}
 
-            // return rScale(d[3]);
-            else {return rScale(d[2]);}
-          })
-          .attr("cx", function(d) { return d[0]; })
-          .attr("cy", function(d) { return d[1]; })
-          .attr("fill", function(d) {
-            if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
-            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
-            else if ((d[2] > 10000)) { return "#f2b593"; }
-            // return rScale(d[3]);
-            else {return "#E94F64";}
-          });
-
-
-=======
-        })
->>>>>>> 1c1504c37512c0afa960c9adb00baa2dcff26fac
 
     }
 
