@@ -271,7 +271,7 @@
 
 
 
-
+      var circles = 0;
       fireData.forEach(function(d) {
 
   			// d.FIRE_YEAR = +d.FIRE_YEAR;
@@ -279,8 +279,11 @@
   			d.LONGITUDE = +d.LONGITUDE;
   			d.FIRE_SIZE = +d.FIRE_SIZE;
 
-        var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
-        coordinates.push(array);
+        if (circles < 2000) {
+          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE];
+          coordinates.push(array);
+        }
+        circles++;
 
         var str = d.STAT_CAUSE_DESCR + " " +  d.FIRE_YEAR;
         // console.log(str);
