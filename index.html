@@ -141,174 +141,198 @@
           showFire(fire);
           showBiPartite(fire);
         }
-var g;
-var causeClicked = "All";
+  var g;
+  var causeClicked = "All";
 
-    function showCA(ca, fireData) {
-      //console.log(ca.objects.caCounties); //for navigating the data in the console
-      g = svg.append("g")
-        .style("stroke-width", "1.5px");
-      //bind feature data to the map
-      g.selectAll(".subunit")
-          .data(topojson.feature(ca, ca.objects.subunits).features)
-        .enter().append("path")
-        .attr("class", function(d) { return "subunit " + d.properties.name; })
-        .attr("d", path)
-        .style("fill", "#f7f7f7")
-        .on("mouseover", function(d){
-         //tooltip
-          div.transition()
-            .duration(100)
-            .style("opacity", .9);
-          div.html(d.properties.fullName)
-            .style("left", (d3.event.pageX  ) + "px")
-            .style("top", (d3.event.pageY - 9) + "px");
-            // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
-            d3.event.stopPropagation();
-        })
-        .on("mouseout", function(d) {
-          div.transition()
-            .duration(100)
-            .style("opacity", 0.0);
-            d3.event.stopPropagation();
-        })
-        .on("click", clicked);
-      //exterior border
-      g.append("path")
-        .datum(topojson.mesh(ca, ca.objects.subunits, function(a, b) { return a === b;}))
-        .attr("d", path)
-        .attr("stroke-opacity", 0.3)
-        .attr("class", "exterior-boundary")
-      //tooltop declaration
-      var div = d3.select("#map_ca").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-        //adds title
-        svg.append("text")
-        .attr("x", 690)
-        .attr("y",140)
-        .attr("class","m_header")
-        .text("Wildfires")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "32px")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .attr("fill", "#E4A408")
-        .style("font-weight", 600);
-        svg.append("text")
-        .attr("x", 690)
-        .attr("y", 165)
-        .attr("class","m_header")
-        .text("in California")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "32px")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .attr("fill", "#E4A408")
-        .style("font-weight", 600);
-        svg.append("text")
-        .attr("x", 800)
-        .attr("y", 190)
-        .attr("class","m_header")
-        .text("from 1992-2007")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "28px")
-        .attr("fill", "#E94F64")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .style("font-weight", 600);
-        svg.append("text")
-        .attr("x", 800)
-        .attr("y", 205)
-        .attr("class","m_header")
-        .text("Based on Fire Size in acres")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "14px")
-        .attr("fill", "#E4A408")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .style("font-weight", 600);
-        svg.append("text")
-        .attr("x", 265)
-        .attr("y", 435)
-        .attr("class","legend")
-        .text("Causes")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "24px")
-        .attr("fill",  "#E94F64")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .style("font-weight", 600);
+  function showCA(ca, fireData) {
+    //console.log(ca.objects.caCounties); //for navigating the data in the console
+    g = svg.append("g")
+      .style("stroke-width", "1.5px");
+    //bind feature data to the map
+    g.selectAll(".subunit")
+        .data(topojson.feature(ca, ca.objects.subunits).features)
+      .enter().append("path")
+      .attr("class", function(d) { return "subunit " + d.properties.name; })
+      .attr("d", path)
+      .style("fill", "#f7f7f7")
+      .on("mouseover", function(d){
+       //tooltip
+        div.transition()
+          .duration(100)
+          .style("opacity", .9);
+        div.html(d.properties.fullName)
+          .style("left", (d3.event.pageX  ) + "px")
+          .style("top", (d3.event.pageY - 9) + "px");
+          // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
+          d3.event.stopPropagation();
+      })
+      .on("mouseout", function(d) {
+        div.transition()
+          .duration(100)
+          .style("opacity", 0.0);
+          d3.event.stopPropagation();
+      })
+      .on("click", clicked);
+    //exterior border
+    g.append("path")
+      .datum(topojson.mesh(ca, ca.objects.subunits, function(a, b) { return a === b;}))
+      .attr("d", path)
+      .attr("stroke-opacity", 0.3)
+      .attr("class", "exterior-boundary")
+    //tooltop declaration
+    var div = d3.select("#map_ca").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+      //adds title
+      svg.append("text")
+      .attr("x", 690)
+      .attr("y",140)
+      .attr("class","m_header")
+      .text("Wildfires")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "32px")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .attr("fill", "#E4A408")
+      .style("font-weight", 600);
+      
+      svg.append("text")
+      .attr("x", 690)
+      .attr("y", 165)
+      .attr("class","m_header")
+      .text("in California")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "32px")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .attr("fill", "#E4A408")
+      .style("font-weight", 600);
 
-        svg.append("text")
-        .attr("x", 268)
-        .attr("y", 445)
-        .attr("class","legend")
-        .text("(Click to Filter)")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "10px")
-        .attr("fill",  "#E94F64")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .style("font-weight", 600);
+      svg.append("text")
+      .attr("x", 800)
+      .attr("y", 190)
+      .attr("class","m_header")
+      .text("from 1992-2007")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "28px")
+      .attr("fill", "#E94F64")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
 
-        svg.append("text")
-        .attr("x", 800)
-        .attr("y", 215)
-        .attr("class","legend")
-        .text("(Click on Map to Zoom In and Out)")
-        .attr("transform","translate(-220,-60)")
-        .style("font-size", "10px")
-        .attr("fill",  "#E94F64")
-        .style("font-family", "'Lato', sans-serif")
-        .style("text-transform", "uppercase")
-        .style("font-weight", 600);
+      svg.append("text")
+      .attr("x", 800)
+      .attr("y", 205)
+      .attr("class","m_header")
+      .text("Based on Fire Size in acres")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "14px")
+      .attr("fill", "#E4A408")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
 
-        svg.append("rect")
-            .attr("x", 580)
-            .attr("y", 160)
-            .attr("class", "legend l_rect")
-            .attr("fill", "white")
-            .style("opacity", ".1")
-            .attr("width", 200)
-            .attr("height", 150);
+      svg.append("text")
+      .attr("x", 265)
+      .attr("y", 435)
+      .attr("class","legend")
+      .text("Causes")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "24px")
+      .attr("fill",  "#E94F64")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
+
+      svg.append("text")
+      .attr("x", 268)
+      .attr("y", 445)
+      .attr("class","legend")
+      .text("(Click to Filter)")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "10px")
+      .attr("fill",  "#E94F64")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
+
+      svg.append("text")
+      .attr("x", 800)
+      .attr("y", 215)
+      .attr("class","legend")
+      .text("(Click on Map to Zoom In and Out)")
+      .attr("transform","translate(-220,-60)")
+      .style("font-size", "10px")
+      .attr("fill",  "#E94F64")
+      .style("font-family", "'Lato', sans-serif")
+      .style("text-transform", "uppercase")
+      .style("font-weight", 600);
+
+      svg.append("rect")
+          .attr("x", 580)
+          .attr("y", 160)
+          .attr("class", "legend l_rect")
+          .attr("fill", "white")
+          .style("opacity", ".1")
+          .attr("width", 200)
+          .attr("height", 150);
 
 
 
 
-        //key
-        var legendCircles = svg.selectAll("circle")
-          .data([[615, 178, .5],[613, 203, 1000], [610, 233, 10000], [608, 273, 150000]]);
+      //key
+      var legendCircles = svg.selectAll("circle")
+        .data([[615, 178, .5],[613, 203, 1000], [610, 233, 10000], [608, 273, 150000]]);
 
-        var legendText = svg.selectAll("circle")
-          .data([
-          [624, 182, "Less than 1 acre"],
-          [624, 210, "Between 1-1000 acres"],
-          [624, 240, "Between 1k - 10k acres"],
-          [624, 277, "More than 10k acres"],
-
-        ]);
-        var causeText = svg.selectAll("circle")
+      var legendText = svg.selectAll("circle")
         .data([
-        [50, 410, "Miscellaneous"],
-        [50, 428,"Lightning"],
-        [50, 446,"Debris Burning"],
-        [50, 464,"Campfire"],
-        [50, 482,"Equipment Use"],
-        [50, 500,"Children"],
-        [50, 518,"Arson"],
-        [50, 536,"Smoking"],
-        [50, 554,"Railroad"],
-        [50, 572,"Fireworks"],
-        [50, 590,"Structure"],
-        [50, 608,"Powerline"],
-        [50, 626,"Missing/Undefined"],
-        [50, 644,"All"]
+        [624, 182, "Less than 1 acre"],
+        [624, 210, "Between 1-1000 acres"],
+        [624, 240, "Between 1k - 10k acres"],
+        [624, 277, "More than 10k acres"],
+
       ]);
-        legendText.enter()
+      var causeText = svg.selectAll("circle")
+      .data([
+      [50, 410, "Miscellaneous"],
+      [50, 428,"Lightning"],
+      [50, 446,"Debris Burning"],
+      [50, 464,"Campfire"],
+      [50, 482,"Equipment Use"],
+      [50, 500,"Children"],
+      [50, 518,"Arson"],
+      [50, 536,"Smoking"],
+      [50, 554,"Railroad"],
+      [50, 572,"Fireworks"],
+      [50, 590,"Structure"],
+      [50, 608,"Powerline"],
+      [50, 626,"Missing/Undefined"],
+      [50, 644,"All"]
+    ]);
+      legendText.enter()
+        .append("text")
+        .merge(legendText)
+        .attr("class","legend")
+        .attr("x", function (d) {
+          return d[0];
+        })
+        .attr("y", function (d) {
+          return d[1];
+        })
+        .text(function (d) {
+          return d[2];
+        })
+        .style("font-size", "10px")
+        .attr("fill", "#f7f7f7")
+        .style("font-family", "'Lato', sans-serif")
+        .style("text-transform", "uppercase")
+        .style("font-weight", 600);
+
+        causeText.enter()
           .append("text")
-          .merge(legendText)
-          .attr("class","legend")
+          .merge(causeText)
+          .attr("class","causes legend")
+          .attr("id", "changeColor")
           .attr("x", function (d) {
             return d[0];
           })
@@ -318,190 +342,173 @@ var causeClicked = "All";
           .text(function (d) {
             return d[2];
           })
-          .style("font-size", "10px")
-          .attr("fill", "#f7f7f7")
+          .style("fill", function (d) {
+            if (d[2] == "All") {
+              causeClicked = this;
+              return "#FFF";
+            } else {
+              return "#e9d44f";
+            }
+          })
+          .style("font-size", "16px")
           .style("font-family", "'Lato', sans-serif")
           .style("text-transform", "uppercase")
-          .style("font-weight", 600);
-
-          causeText.enter()
-            .append("text")
-            .merge(causeText)
-            .attr("class","causes legend")
-            .attr("id", "changeColor")
-            .attr("x", function (d) {
-              return d[0];
-            })
-            .attr("y", function (d) {
-              return d[1];
-            })
-            .text(function (d) {
-              return d[2];
-            })
-            .style("fill", function (d) {
-              if (d[2] == "All") {
-                causeClicked = this;
-                return "#FFF";
-              } else {
-                return "#e9d44f";
-              }
-            })
-            .style("font-size", "16px")
-            .style("font-family", "'Lato', sans-serif")
-            .style("text-transform", "uppercase")
-            .style("font-weight", 600)
-            .on("mouseover", function(d) {
-              if (!(zoomed)) {
-                d3.select(this).style("opacity", ".5").style("cursor", "pointer");
-              }
-            })
-            .on("mouseout", function(d) {
-              if (!(zoomed)) {
-              d3.select(this).style("opacity", ".9").style("cursor", "none");
+          .style("font-weight", 600)
+          .on("mouseover", function(d) {
+            if (!(zoomed)) {
+              d3.select(this).style("opacity", ".5").style("cursor", "pointer");
             }
-            })
-            .on("click", function(d) {
-              d3.select(causeClicked).style("fill", "#e9d44f");
-              d3.select("changeColor").style("fill", "#e9d44f");
-              d3.select(this).style("fill", "#FFF");
-              clickedBool = true;
-              causeClicked = this;
-              circlesAppear(fireData, d[2]);
-            });
-        legendCircles.enter()
-          .append("circle")
-          .merge(legendCircles)
-          .attr("class","legend")
-          .attr("r", function(d) {
-            if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
-            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
-            else if((d[2] > 10000)) {return 12;}
-            // return rScale(d[3]);
-            else {return rScale(d[2]);}
           })
-          .attr("cx", function(d) { return d[0]; })
-          .attr("cy", function(d) { return d[1]; })
-          .attr("fill", function(d) {
-            if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
-            else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
-            else if ((d[2] > 10000)) { return "#f2b593"; }
-            // return rScale(d[3]);
-            else {return "#E94F64";}
+          .on("mouseout", function(d) {
+            if (!(zoomed)) {
+            d3.select(this).style("opacity", ".9").style("cursor", "none");
+          }
+          })
+          .on("click", function(d) {
+            d3.select(causeClicked).style("fill", "#e9d44f");
+            d3.select("changeColor").style("fill", "#e9d44f");
+            d3.select(this).style("fill", "#FFF");
+            clickedBool = true;
+            causeClicked = this;
+            circlesAppear(fireData, d[2]);
           });
+      legendCircles.enter()
+        .append("circle")
+        .merge(legendCircles)
+        .attr("class","legend")
+        .attr("r", function(d) {
+          if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
+          else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
+          else if((d[2] > 10000)) {return 12;}
+          // return rScale(d[3]);
+          else {return rScale(d[2]);}
+        })
+        .attr("cx", function(d) { return d[0]; })
+        .attr("cy", function(d) { return d[1]; })
+        .attr("fill", function(d) {
+          if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
+          else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
+          else if ((d[2] > 10000)) { return "#f2b593"; }
+          // return rScale(d[3]);
+          else {return "#E94F64";}
+        });
+  }
+
+  function clicked(d) {
+    // console.log("here");
+    if (active.node() === this) return reset();
+    // console.log("there");
+    active.classed("active", false);
+    active = d3.select(this).classed("active", true);
+    var bounds = path.bounds(d),
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1],
+        x = (bounds[0][0] + bounds[1][0]) / 2,
+        y = (bounds[0][1] + bounds[1][1]) / 2,
+        scale = .9 / Math.max(dx / width, dy / height),
+        translate = [width / 2 - scale * x, height / 2 - scale * y];
+    g.transition()
+        .duration(750)
+        .style("stroke-width", 1.5 / scale + "px")
+        .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+    svg.selectAll(".legend")
+    .style("opacity", "0")
+    .style("transition", "opacity 1s");
+    svg.selectAll(".m_header")
+    .style("opacity", "0")
+    .style("transition", "opacity 1s");
+    clicked = true;
+    zoomed = true;
     }
-    function clicked(d) {
-      // console.log("here");
-      if (active.node() === this) return reset();
-      // console.log("there");
-      active.classed("active", false);
-      active = d3.select(this).classed("active", true);
-      var bounds = path.bounds(d),
-          dx = bounds[1][0] - bounds[0][0],
-          dy = bounds[1][1] - bounds[0][1],
-          x = (bounds[0][0] + bounds[1][0]) / 2,
-          y = (bounds[0][1] + bounds[1][1]) / 2,
-          scale = .9 / Math.max(dx / width, dy / height),
-          translate = [width / 2 - scale * x, height / 2 - scale * y];
-      g.transition()
-          .duration(750)
-          .style("stroke-width", 1.5 / scale + "px")
-          .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-      svg.selectAll(".legend")
-      .style("opacity", "0")
-      .style("transition", "opacity 1s");
-      svg.selectAll(".m_header")
-      .style("opacity", "0")
-      .style("transition", "opacity 1s");
-      clicked = true;
-      zoomed = true;
+
+  function reset() {
+    active.classed("active", false);
+    active = d3.select(null);
+    g.transition()
+        .duration(750)
+        .style("stroke-width", "1.5px")
+        .attr("transform", "");
+   svg.selectAll(".legend")
+   .style("opacity", ".9");
+   // .style("transition", "opacity 5s")
+   svg.selectAll(".m_header")
+   .style("opacity", ".9");
+   // .style("transition", "opacity 5s");
+
+   svg.selectAll(".l_rect")
+   .style("opacity", ".1");
+
+   zoomed=false;
+
+
+  }
+
+  function circlesAppear(fireData, cause) {
+    var c = d3.selectAll(".mapCircs").remove();
+    coordinates = [];
+    circles = 0;
+    curr_cause = cause;
+    fireData.forEach(function(d) {
+      d.LATITUDE = +d.LATITUDE;
+      d.LONGITUDE = +d.LONGITUDE;
+      d.FIRE_SIZE = +d.FIRE_SIZE;
+    if (circles < 40000) {
+      if (cause == "All") {
+        var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE, d.FIRE_NAME, d.FIRE_YEAR];
+        coordinates.push(array);
+        circles++;
       }
-    function reset() {
-      active.classed("active", false);
-      active = d3.select(null);
-      g.transition()
-          .duration(750)
-          .style("stroke-width", "1.5px")
-          .attr("transform", "");
-     svg.selectAll(".legend")
-     .style("opacity", ".9");
-     // .style("transition", "opacity 5s")
-     svg.selectAll(".m_header")
-     .style("opacity", ".9");
-     // .style("transition", "opacity 5s");
-
-     svg.selectAll(".l_rect")
-     .style("opacity", ".1");
-
-     zoomed=false;
-
-
+      else if (d.STAT_CAUSE_DESCR == cause) {
+        var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE, d.FIRE_NAME, d.FIRE_YEAR];
+        coordinates.push(array);
+        circles++;
+      }
     }
-    function circlesAppear(fireData, cause) {
-      var c = d3.selectAll(".mapCircs").remove();
-      coordinates = [];
-      circles = 0;
-      curr_cause = cause;
-      fireData.forEach(function(d) {
-        d.LATITUDE = +d.LATITUDE;
-        d.LONGITUDE = +d.LONGITUDE;
-        d.FIRE_SIZE = +d.FIRE_SIZE;
-      if (circles < 40000) {
-        if (cause == "All") {
-          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE, d.FIRE_NAME, d.FIRE_YEAR];
-          coordinates.push(array);
-          circles++;
-        }
-        else if (d.STAT_CAUSE_DESCR == cause) {
-          var array = [d.LONGITUDE, d.LATITUDE, d.FIRE_SIZE, d.FIRE_NAME, d.FIRE_YEAR];
-          coordinates.push(array);
-          circles++;
-        }
-      }
+  })
+  var circles = g.selectAll("circle")
+    .data(coordinates);
+  circles.enter()
+    .append("circle")
+    .attr("class", "mapCircs")
+    .attr("r", function(d) {
+      if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
+      else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
+      else if((d[2] > 10000)) {return 12;}
+      // return rScale(d[3]);
+      else {return rScale(d[2]);}
     })
-    var circles = g.selectAll("circle")
-      .data(coordinates);
-    circles.enter()
-      .append("circle")
-      .attr("class", "mapCircs")
-      .attr("r", function(d) {
-        if ((d[2] > 1) && (d[2] <= 1000 )) { return 4; }
-        else if ((d[2] > 1000) && (d[2] <= 10000 )) { return 9; }
-        else if((d[2] > 10000)) {return 12;}
-        // return rScale(d[3]);
-        else {return rScale(d[2]);}
-      })
-      .merge(circles)
-      .attr("cx", function(d) { return projection(d)[0]; })
-      .attr("cy", function(d) { return projection(d)[1]; })
-      .attr("fill", function(d) {
-        if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
-        else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
-        else if ((d[2] > 10000)) { return "#f2b593"; }
-        // return rScale(d[3]);
-        else {return "#E94F64";}
-      })
-      .on("mouseover", function(d){
-       //tooltip
-        div2.transition()
-          .duration(100)
-          .style("opacity", function(d) {
-            if(zoomed) { return 0.9;}
-            else { return 0.0;}
-          });
-        div2.html(d[3] + " (" + d[4] +")")
-          .style("left", (d3.event.pageX  ) + "px")
-          .style("top", (d3.event.pageY - 9) + "px");
-          // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
-          // if (zoomed) {d3.select(this).style("opacity", ".5")};
-          d3.event.stopPropagation();
-      })
-      .on("mouseout", function(d) {
-        div2.transition()
-          .duration(100)
-          .style("opacity", 0.0);
-          // if (zoomed) {d3.select(this).style("opacity", ".9");}
-          d3.event.stopPropagation();
-      })
+    .merge(circles)
+    .attr("cx", function(d) { return projection(d)[0]; })
+    .attr("cy", function(d) { return projection(d)[1]; })
+    .attr("fill", function(d) {
+      if ((d[2] > 1) && (d[2] <= 1000 )) { return "#e9874f"; }
+      else if ((d[2] > 1000) && (d[2] <= 10000 )) { return "#e9d44f"; }
+      else if ((d[2] > 10000)) { return "#f2b593"; }
+      // return rScale(d[3]);
+      else {return "#E94F64";}
+    })
+    .on("mouseover", function(d){
+     //tooltip
+      div2.transition()
+        .duration(100)
+        .style("opacity", function(d) {
+          if(zoomed) { return 0.9;}
+          else { return 0.0;}
+        });
+      div2.html(d[3] + " (" + d[4] +")")
+        .style("left", (d3.event.pageX  ) + "px")
+        .style("top", (d3.event.pageY - 9) + "px");
+        // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
+        // if (zoomed) {d3.select(this).style("opacity", ".5")};
+        d3.event.stopPropagation();
+    })
+    .on("mouseout", function(d) {
+      div2.transition()
+        .duration(100)
+        .style("opacity", 0.0);
+        // if (zoomed) {d3.select(this).style("opacity", ".9");}
+        d3.event.stopPropagation();
+    })
 
     //tooltop declaration
     var div2 = d3.select("#map_ca").append("div2")
