@@ -139,6 +139,7 @@
           showBiPartite(fire);
         }
 var g;
+var causeClicked = "All";
 
     function showCA(ca, fireData) {
       //console.log(ca.objects.caCounties); //for navigating the data in the console
@@ -312,6 +313,7 @@ var g;
             .append("text")
             .merge(causeText)
             .attr("class","causes legend")
+            .attr("id", "changeColor")
             .attr("x", function (d) {
               return d[0];
             })
@@ -321,14 +323,8 @@ var g;
             .text(function (d) {
               return d[2];
             })
+            .style("fill", "#e9d44f")
             .style("font-size", "16px")
-            .attr("fill", function(d) {
-              if ((d == "All") && (curr_cause == "All")) {
-                return "FFF";
-              } else {
-                return "#e9d44f";
-              }
-            })
             .style("font-family", "'Lato', sans-serif")
             .style("text-transform", "uppercase")
             .style("font-weight", 600)
@@ -343,7 +339,10 @@ var g;
             }
             })
             .on("click", function(d) {
+              d3.select("changeColor").style("fill", "#e9d44f");
+              d3.select(this).style("fill", "#FFF");
               clickedBool = true;
+              causeClicked = d[2];
               circlesAppear(fireData, d[2]);
             });
         legendCircles.enter()
