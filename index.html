@@ -323,7 +323,14 @@ var causeClicked = "All";
             .text(function (d) {
               return d[2];
             })
-            .style("fill", "#e9d44f")
+            .style("fill", function (d) {
+              if (d[2] == "All") {
+                causeClicked = this;
+                return "#FFF";
+              } else {
+                return "#e9d44f";
+              }
+            })
             .style("font-size", "16px")
             .style("font-family", "'Lato', sans-serif")
             .style("text-transform", "uppercase")
@@ -339,10 +346,11 @@ var causeClicked = "All";
             }
             })
             .on("click", function(d) {
+              d3.select(causeClicked).style("fill", "#e9d44f");
               d3.select("changeColor").style("fill", "#e9d44f");
               d3.select(this).style("fill", "#FFF");
               clickedBool = true;
-              causeClicked = d[2];
+              causeClicked = this;
               circlesAppear(fireData, d[2]);
             });
         legendCircles.enter()
@@ -469,14 +477,14 @@ var causeClicked = "All";
           .style("left", (d3.event.pageX  ) + "px")
           .style("top", (d3.event.pageY - 9) + "px");
           // console.log(d3.event.pageX - 300, d3.event.pageY - 500);
-          if (zoomed) {d3.select(this).style("opacity", ".5")};
+          // if (zoomed) {d3.select(this).style("opacity", ".5")};
           d3.event.stopPropagation();
       })
       .on("mouseout", function(d) {
         div2.transition()
           .duration(100)
           .style("opacity", 0.0);
-          if (zoomed) {d3.select(this).style("opacity", ".9");}
+          // if (zoomed) {d3.select(this).style("opacity", ".9");}
           d3.event.stopPropagation();
       })
 
